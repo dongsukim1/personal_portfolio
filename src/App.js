@@ -1,57 +1,186 @@
-import { useState } from 'react';
-import { Card, CardContent } from "./components/ui/card";
-import { Button } from "./components/ui/button";
-import { motion } from "framer-motion";
+import React from "react";
+// Styles
+import { ThemeProvider } from "styled-components";
+// State
+import { useDispatch, useSelector } from "react-redux";
+import { selectMode, setMode } from "./app/appSlice";
+import {
+  setProjects,
+  setMainProjects,
+  selectProjects,
+} from "./app/projectsSlice";
+import { useGetUsersQuery, useGetProjectsQuery } from "./app/apiSlice";
+import PropTypes from "prop-types";
+// Router
+import { HashRouter, Routes, Route } from "react-router-dom";
+// Pages
+import Home from "./pages/Home";
+import AllProjects from "./pages/AllProjects";
+import NotFound from "./pages/NotFound";
+// Components
+import { ErrorBoundary } from "react-error-boundary";
+import AppFallback from "./components/AppFallback";
+import GlobalStyles from "./components/GlobalStyles";
+import ScrollToTop from "./components/ScrollToTop";
+import Loading from "./components/Loading";
+import { Element } from "react-scroll";
+import { Container } from "react-bootstrap";
+import NavBar from "./components/NavBar";
+import Footer from "./components/Footer";
+// Config
+import { footerTheme, navLogo } from "./config";
+// Util
+import { getStoredTheme, getPreferredTheme, setTheme } from "./utils";
 
-const projects = [
-  {
-    title: "Sorting Visualizer",
-    description: "Visualizes common sorting algorithms like bubble sort and merge sort.",
-    repo: "https://github.com/your-username/sorting-visualizer",
-    demoComponent: () => <div className="text-center">[Insert Sorting Visualizer Here]</div>
-  },
-  {
-    title: "Weather Dashboard",
-    description: "A simple weather app using an external API.",
-    repo: "https://github.com/your-username/weather-dashboard",
-    demoComponent: () => <div className="text-center">[Insert Weather App Here]</div>
+// #region component
+const propTypes = {
+  filteredProjects: PropTypes.arrayOf(PropTypes.string),
+  projectCardImages: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      image: PropTypes.node.isRequired,
+    })
+  ),
+};
+
+const App = ({ projectCardImages = [], filteredProjects = [] }) => {
+  const theme = useSelector(selectMode);
+  const projects = useSelector(selectProjects);
+  const dispatch = useDispatch();
+  const { isLoading, isSuccess, isError, error } = useGetUsersQuery();
+  const { data: projectsData } = useGetProjectsQuery();
+  let content;
+
+  // Set all projects state
+  React.useEffect(() => {
+    const tempData = [];
+    if (projectsData !== undefined && projectsData.length !== 0) {
+      projectsData.forEach((element) => {
+        const tempObj = {
+          id: null,
+          homepage: null,
+          description: null,
+          image: null,
+          name: null,
+          html_url: null,
+        };
+        tempObj.id = element.id;
+        tempObj.homepage = element.homepage;
+        tempObj.description = element.description;
+        tempObj.name = element.name;
+        tempObj.html_url = element.html_url;
+        tempData.push(tempObj);
+      });
+      if (
+        projectCardImages !== (undefined && null) &&
+        projectCardImages.length !== 0
+      ) {
+        projectCardImages.forEach((element) => {
+          tempData.forEach((ele) => {
+            if (element.name.toLowerCase() === ele.name.toLowerCase()) {
+              ele.image = element.image;
+            }
+          });
+        });
+      }
+      dispatch(setProjects(tempData));
+    }
+  }, [projectsData, projectCardImages, dispatch]);
+
+  // Set main projects state
+  React.useEffect(() => {
+    if (projects.length !== 0) {
+      if (
+        filteredProjects !== (undefined && null) &&
+        filteredProjects.length !== 0
+      ) {
+        const tempArray = projects.filter((obj) =>
+          filteredProjects.includes(obj.name)
+        );
+        tempArray.length !== 0
+          ? dispatch(setMainProjects([...tempArray]))
+          : dispatch(setMainProjects([...projects.slice(0, 3)]));
+      } else {
+        dispatch(setMainProjects([...projects.slice(0, 3)]));
+      }
+    }
+  }, [projects, filteredProjects, dispatch]);
+
+  // Theme
+  const setThemes = React.useCallback(
+    (theme) => {
+      if (theme) {
+        dispatch(setMode(theme));
+        setTheme(theme);
+      } else {
+        dispatch(setMode(getPreferredTheme()));
+        setTheme(getPreferredTheme());
+      }
+    },
+    [dispatch]
+  );
+
+  React.useEffect(() => {
+    setThemes();
+  }, [setThemes]);
+
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", () => {
+      const storedTheme = getStoredTheme();
+      if (storedTheme !== "light" && storedTheme !== "dark") {
+        setThemes();
+      }
+    });
+
+  if (isLoading) {
+    content = (
+      <Container className="d-flex vh-100 align-items-center">
+        <Loading />
+      </Container>
+    );
+  } else if (isSuccess) {
+    content = (
+      <>
+        <Element name={"Home"} id="home">
+          <NavBar Logo={navLogo} callBack={(theme) => setThemes(theme)} />
+        </Element>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/All-Projects" element={<AllProjects />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer mode={footerTheme} />
+      </>
+    );
+  } else if (isError) {
+    content = (
+      <Container className="d-flex vh-100 align-items-center justify-content-center">
+        <h2>
+          {error.status !== "FETCH_ERROR"
+            ? `${error.status}: ${error.data.message} - check githubUsername in src/config.js`
+            : `${error.status} - check URLs in  src/app/apiSlice.js`}
+        </h2>
+      </Container>
+    );
   }
-  // Add more projects here
-];
-
-export default function Portfolio() {
-  const [activeDemo, setActiveDemo] = useState(null);
 
   return (
-    <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {projects.map((project, idx) => (
-        <motion.div
-          key={idx}
-          className="rounded-2xl shadow-lg hover:shadow-2xl transition"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: idx * 0.1 }}
-        >
-          <Card>
-            <CardContent className="p-4 flex flex-col gap-4">
-              <h2 className="text-xl font-semibold">{project.title}</h2>
-              <p className="text-base text-gray-600">{project.description}</p>
-              <div className="flex justify-between">
-                <Button onClick={() => setActiveDemo(idx)} variant="outline">Live Demo</Button>
-                <a href={project.repo} target="_blank" rel="noopener noreferrer">
-                  <Button>GitHub</Button>
-                </a>
-              </div>
-              {activeDemo === idx && (
-                <div className="mt-4 p-4 border rounded-xl bg-gray-50">
-                  {project.demoComponent()}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      ))}
-    </div>
+    <ErrorBoundary FallbackComponent={AppFallback}>
+      {/* https://reactrouter.com/6.28.0/upgrading/future#v7_starttransition */}
+      {/* https://reactrouter.com/6.28.0/upgrading/future#v7_relativesplatpath */}
+      <HashRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true, }}>
+        <ThemeProvider theme={{ name: theme }}>
+          <ScrollToTop />
+          <GlobalStyles />
+          {content}
+        </ThemeProvider>
+      </HashRouter>
+    </ErrorBoundary>
   );
-}
+};
 
+App.propTypes = propTypes;
+// #endregion
+
+export default App;
