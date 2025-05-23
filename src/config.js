@@ -11,10 +11,9 @@ import HeroDark from "./images/hero-dark.jpg";
 // Projects Images (add your images to the images directory and import below)
 import Logo from "./images/logo.svg";
 
-/* START HERE
- **************************************************************
-  Add your GitHub username (string - "YourUsername") below.
-*/
+
+//Github Username
+
 export const githubUsername = "dongsukim1";
 
 // Navbar Logo image
@@ -24,7 +23,7 @@ export const navLogo = null;
  ************************************************************** 
   Add a custom blog icon or update the hero images for the Main section.
 */
-export const Blog = null;
+export const Blog = "";
 
 // Hero images (imported above - lines 8-9)
 export { HeroLight as Light };
@@ -35,8 +34,7 @@ export { HeroDark as Dark };
   Add a second paragraph for the about me section.
 */
 export const moreInfo =
-  "I enjoy learning about technology and helping others use it to improve their lives and be more productive. I built this site with React, React Bootstrap, Redux, and the GitHub REST API.";
-
+  "I am a recent Bioengineering/Computer Science graduate from Berkeley seeking opportunities to apply interdisciplinary problem-solving skills to real world software/ML systems.";
 /* Skills
  ************************************************************** 
   Add or remove skills in the SAME format below, choose icons here - https://icon-sets.iconify.design/
@@ -44,46 +42,41 @@ export const moreInfo =
 export const skillData = [
   {
     id: 1,
-    skill: <Icon icon="mdi:language-html5" className="display-4" />,
-    name: "HTML5",
+    skill: <Icon icon="skill-icons:python-dark" className="display-4" />,
+    name: "Python",
   },
   {
     id: 2,
-    skill: <Icon icon="ion:logo-css3" className="display-4" />,
-    name: "CSS3",
+    skill: <Icon icon="skill-icons:java-light" className="display-4" />,
+    name: "Java",
   },
   {
     id: 3,
+    skill: <Icon icon="vscode-icons:file-type-c" className="display-4" />,
+    name: "C",
+  },
+  {
+    id: 4,
     skill: <Icon icon="fa6-brands:js" className="display-4" />,
     name: "JavaScript",
   },
   {
-    id: 4,
-    skill: <Icon icon="ri:bootstrap-fill" className="display-4" />,
-    name: "BootStrap",
-  },
-  {
     id: 5,
-    skill: <Icon icon="mdi:react" className="display-4" />,
-    name: "React",
+    skill: <Icon icon="skill-icons:aws-dark" className="display-4" />,
+    name: "AWS",
   },
   {
     id: 6,
-    skill: <Icon icon="file-icons:styledcomponents" className="display-4" />,
-    name: "Styled Components",
-  },
+    skill: <Icon icon="mdi:react" className="display-4" />,
+    name: "React",
+  }, 
   {
     id: 7,
-    skill: <Icon icon="akar-icons:redux-fill" className="display-4" />,
-    name: "Redux",
-  },
-  {
-    id: 8,
     skill: <Icon icon="bi:git" className="display-4" />,
     name: "Git",
   },
   {
-    id: 9,
+    id: 8,
     skill: <Icon icon="fa6-brands:square-github" className="display-4" />,
     name: "GitHub",
   },
