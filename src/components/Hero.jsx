@@ -107,7 +107,7 @@ const Hero = ({ name }) => {
         <Row className="align-items-center text-center">
           <Col>
             <h1 className="mb-3 display-3 title">
-              {name === null ? "null" : name}
+              {name === null ? "Dongsu Kim" : name}
             </h1>
             <div className="d-flex align-items-center justify-content-center">
               <SocialLinks />
