@@ -6,7 +6,7 @@ import Hero from "../components/Hero";
 import AboutMe from "../components/AboutMe";
 import Skills from "../components/Skills";
 import Projects from "../components/Projects";
-import Contact from "../components/Contact";
+// import Contact from "../components/Contact"; contacts removed
 import BackToTop from "../components/BackToTop";
 // Config
 import { filteredProjects, moreInfo } from "../config";
@@ -32,7 +32,7 @@ const Home = () => {
         />
         <Skills />
         <Projects filteredProjects={filteredProjects} />
-        <Contact />
+        {/* <Contact /> contacts removed */}
       </main>
       <BackToTop />
     </>

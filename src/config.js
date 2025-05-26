@@ -91,7 +91,7 @@ export const resume = null;
 */
 export const filteredProjects = ["example-1", "example-2", "example-3"];
 
-// Replace the defualt GitHub image for matching repos below (images imported above - lines 7-8)
+// Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
   {
     name: "example-1",
@@ -104,7 +104,7 @@ export const projectCardImages = [
   Add your formspree endpoint below.
   https://formspree.io/
 */
-export const formspreeUrl = "https://formspree.io/f/YourEndpoint";
+// export const formspreeUrl = "https://formspree.io/f/YourEndpoint";
 
 // Footer icons theme (light or dark)
 export const footerTheme = "dark";
