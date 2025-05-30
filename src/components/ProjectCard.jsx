@@ -26,6 +26,13 @@ const StyledCard = styled.div`
     .card-img-top {
       height: 50%;
       object-fit: contain;
+      margin-top: 2rem;
+    }
+
+    .card-body {
+      .card-title {
+        margin-top: 1.5rem; // Add this line to shift name down
+      }
     }
 
     .card-link {
@@ -82,12 +89,12 @@ const ProjectCard = ({ demo, description, image, name, url }) => {
         <Card.Body className="overflow-auto text-center">
           <Card.Title>{name}</Card.Title>
           <Card.Text>{description}</Card.Text>
-          {demo !== (undefined && null && "") ? (
+          {/* {demo !== (undefined && null && "") ? (
             <Card.Link href={demo}>
               {"Live Demo "}
               <Icon icon="icon-park-outline:code-computer" />
             </Card.Link>
-          ) : null}
+          ) : null} */}
         </Card.Body>
         <Card.Footer className="text-center">
           <Card.Link href={url}>

@@ -9,7 +9,9 @@ import HeroLight from "./images/hero-light.jpg";
 import HeroDark from "./images/hero-dark.jpg";
 
 // Projects Images (add your images to the images directory and import below)
-import Logo from "./images/logo.svg";
+// import Logo from "./images/logo.svg";
+import pp1 from "./images/project_photo1.jpg"
+import pp2 from "./images/project_photo2.jpg"
 
 
 //Github Username
@@ -89,14 +91,18 @@ export const resume = null;
  ************************************************************** 
   List the repo names (string - "your-repo-name") you want to include (they will be sorted alphabetically). If empty, only the first 3 will be included.
 */
-export const filteredProjects = ["example-1", "example-2", "example-3"];
+export const filteredProjects = ["Blood_Protein_Classification", "image_classification"];
 
 // Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
   {
-    name: "example-1",
-    image: Logo,
+    name: "image_classification",
+    image: pp1,
   },
+  {
+    name: "Blood_Protein_Classification",
+    image: pp2
+  }
 ];
 
 /* Contact Info
