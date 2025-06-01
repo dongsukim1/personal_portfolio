@@ -97,12 +97,12 @@ export const filteredProjects = ["Blood_Protein_Classification", "Image_Classifi
 // Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
   {
-    name: "image_classification",
-    image: pp1,
-  },
-  {
     name: "Blood_Protein_Classification",
     image: pp2
+  },
+  {
+    name: "Image_Classification",
+    image: pp1,
   },
   {
     name: "Sequence-Augmentation-Project",
