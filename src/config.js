@@ -92,7 +92,7 @@ export const resume = null;
  ************************************************************** 
   List the repo names (string - "your-repo-name") you want to include (they will be sorted alphabetically). If empty, only the first 3 will be included.
 */
-export const filteredProjects = ["Blood_Protein_Classification", "Image_Classification", "Sequence-Augmentation-Project"];
+export const filteredProjects = ["Blood_Protein_Classification", "Image_Classification", "data_augmentation_examples"];
 
 // Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
