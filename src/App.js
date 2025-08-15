@@ -41,9 +41,10 @@ const propTypes = {
       image: PropTypes.node.isRequired,
     })
   ),
+  projectDisplayNames: PropTypes.object,
 };
 
-const App = ({ projectCardImages = [], filteredProjects = [] }) => {
+const App = ({ projectCardImages = [], filteredProjects = [], projectDisplayNames = {} }) => {
   const theme = useSelector(selectMode);
   const projects = useSelector(selectProjects);
   const dispatch = useDispatch();
@@ -62,12 +63,14 @@ const App = ({ projectCardImages = [], filteredProjects = [] }) => {
           description: null,
           image: null,
           name: null,
+          originalName: null,
           html_url: null,
         };
         tempObj.id = element.id;
         tempObj.homepage = element.homepage;
         tempObj.description = element.description;
-        tempObj.name = element.name;
+        tempObj.name = element.name; // Keep original name for now
+        tempObj.originalName = element.name; // Store original for reference
         tempObj.html_url = element.html_url;
         tempData.push(tempObj);
       });
@@ -83,9 +86,15 @@ const App = ({ projectCardImages = [], filteredProjects = [] }) => {
           });
         });
       }
+      
+      // Apply display names after image matching
+      tempData.forEach((project) => {
+        project.name = projectDisplayNames[project.originalName] || project.originalName;
+      });
+      
       dispatch(setProjects(tempData));
     }
-  }, [projectsData, projectCardImages, dispatch]);
+  }, [projectsData, projectCardImages, projectDisplayNames, dispatch]);
 
   // Set main projects state
   React.useEffect(() => {
@@ -95,7 +104,7 @@ const App = ({ projectCardImages = [], filteredProjects = [] }) => {
         filteredProjects.length !== 0
       ) {
         const tempArray = projects.filter((obj) =>
-          filteredProjects.includes(obj.name)
+          filteredProjects.includes(obj.originalName || obj.name)
         );
         tempArray.length !== 0
           ? dispatch(setMainProjects([...tempArray]))

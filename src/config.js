@@ -72,7 +72,7 @@ export const skillData = [
     id: 6,
     skill: <Icon icon="mdi:react" className="display-4" />,
     name: "React",
-  }, 
+  },
   {
     id: 7,
     skill: <Icon icon="bi:git" className="display-4" />,
@@ -94,6 +94,14 @@ export const resume = null;
 */
 export const filteredProjects = ["Blood_Protein_Classification", "Image_Classification", "data_augmentation_examples"];
 
+// Custom display names for projects (optional - if not specified, repo name will be used)
+export const projectDisplayNames = {
+  "data_augmentation_examples": "Sequence Augmentation Project",
+  "Image_Classification": "Image Classification Project",
+  "Blood_Protein_Classification": "Blood Protein Classification Project"
+  // "repo-name": "Custom Display Name"
+};
+
 // Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
   {
@@ -105,7 +113,7 @@ export const projectCardImages = [
     image: pp1,
   },
   {
-    name: "Sequence-Augmentation-Project",
+    name: "data_augmentation_examples",
     image: pp3
   }
 ];

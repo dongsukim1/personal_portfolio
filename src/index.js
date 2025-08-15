@@ -6,7 +6,7 @@ import "./custom.scss";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 // Config
-import { filteredProjects, projectCardImages } from "./config";
+import { filteredProjects, projectCardImages, projectDisplayNames } from "./config";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
@@ -17,6 +17,7 @@ root.render(
     <App
       filteredProjects={filteredProjects}
       projectCardImages={projectCardImages}
+      projectDisplayNames={projectDisplayNames}
     />
   </Provider>
 );
