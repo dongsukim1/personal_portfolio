@@ -10,16 +10,15 @@ import Projects from "../components/Projects";
 import BackToTop from "../components/BackToTop";
 // Config
 import { filteredProjects, moreInfo } from "../config";
-// Utils
-import { updateTitle } from "../utils";
+// Hooks
+import { useTitle, TITLES } from "../hooks/useTitle";
 
 // #region component
 const Home = () => {
   const { data: userData } = useGetUsersQuery();
 
-  React.useEffect(() => {
-    updateTitle(`${userData.name} | Portfolio`);
-  }, [userData]);
+  // Use centralized title management
+  useTitle(TITLES.HOME, userData);
 
   return (
     <>

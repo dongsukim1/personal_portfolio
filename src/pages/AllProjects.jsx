@@ -20,8 +20,8 @@ import Loading from "../components/Loading";
 import Title from "../components/Title";
 import ProjectCard from "../components/ProjectCard";
 import BackToTop from "../components/BackToTop";
-// Utils
-import { updateTitle } from "../utils";
+// Hooks
+import { useTitle, TITLES } from "../hooks/useTitle";
 
 // #region styled-components
 const StyledSection = styled.section`
@@ -48,9 +48,8 @@ const AllProjects = () => {
   const { isLoading, isSuccess, isError, error } = useGetProjectsQuery();
   let content;
 
-  React.useEffect(() => {
-    updateTitle(`${userData.name} | All Projects`);
-  }, [userData]);
+  // Use centralized title management
+  useTitle(TITLES.ALL_PROJECTS, userData);
 
   React.useEffect(() => {
     if (searchInput !== "") {

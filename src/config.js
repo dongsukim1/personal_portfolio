@@ -19,6 +19,17 @@ import pp3 from "./images/temp_project_image.jpg"
 
 export const githubUsername = "dongsukim1";
 
+// Site metadata - single source of truth
+export const siteConfig = {
+  displayName: "Dong Su Kim",
+  siteName: "Portfolio",
+  description: "Bioengineering/Computer Science graduate from Berkeley",
+  url: "https://dongsukim1.github.io/personal_portfolio/"
+};
+
+// Legacy export for backward compatibility
+export const displayName = siteConfig.displayName;
+
 // Navbar Logo image
 export const navLogo = null;
 
