@@ -1,7 +1,33 @@
 // Update tab title
 export const updateTitle = (title) => (document.title = title);
 
-// Theme
+// Utility functions for common checks
+export const isValidString = (value) => {
+  return value && typeof value === 'string' && value.trim().length > 0;
+};
+
+export const isValidArray = (value) => {
+  return Array.isArray(value) && value.length > 0;
+};
+
+export const isValidUrl = (value) => {
+  if (!isValidString(value)) return false;
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Safe property access
+export const safeGet = (obj, path, defaultValue = null) => {
+  return path.split('.').reduce((current, key) => {
+    return current?.[key] ?? defaultValue;
+  }, obj);
+};
+
+// Theme utilities
 export const getStoredTheme = () => localStorage.getItem("theme");
 
 export const getPreferredTheme = () => {

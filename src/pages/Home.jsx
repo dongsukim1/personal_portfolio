@@ -8,29 +8,30 @@ import Skills from "../components/Skills";
 import Projects from "../components/Projects";
 // import Contact from "../components/Contact"; contacts removed
 import BackToTop from "../components/BackToTop";
-// Config
-import { filteredProjects, moreInfo } from "../config";
+// Contexts
+import { useConfig } from "../contexts/ConfigContext";
 // Hooks
 import { useTitle, TITLES } from "../hooks/useTitle";
 
 // #region component
 const Home = () => {
   const { data: userData } = useGetUsersQuery();
+  const { content } = useConfig();
 
   // Use centralized title management
   useTitle(TITLES.HOME, userData);
 
   return (
     <>
-      <Hero name={userData.name} />
+      <Hero name={userData?.name} />
       <main>
         <AboutMe
-          avatar_url={userData.avatar_url}
-          bio={userData.bio}
-          moreInfo={moreInfo}
+          // avatar_url={userData?.avatar_url}
+          bio={userData?.bio}
+          moreInfo={content.moreInfo}
         />
         <Skills />
-        <Projects filteredProjects={filteredProjects} />
+        <Projects />
         {/* <Contact /> contacts removed */}
       </main>
       <BackToTop />

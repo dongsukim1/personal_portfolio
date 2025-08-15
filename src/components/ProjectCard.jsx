@@ -9,50 +9,54 @@ import { Icon } from "@iconify/react";
 import GH from "../images/GH.svg";
 // Components
 import { Card } from "react-bootstrap";
+// Theme
+import { spacing, sizes, animations } from "../theme/tokens";
+// Utils
+import { isValidUrl } from "../utils";
 
 // #region styled-components
 const StyledCard = styled.div`
   .card {
-    height: var(--card-height);
+    height: ${sizes.cardHeight};
     border: var(--border);
-    transition: all 0.2s ease-in-out;
+    transition: ${animations.transition};
     background: ${({ theme }) =>
-      theme.name === "light" ? "" : "var(--bs-gray)"};
+    theme.name === "light" ? "" : "var(--bs-gray)"};
     box-shadow: ${({ theme }) =>
-      theme.name === "light"
-        ? "0 3px 10px rgb(0 0 0 / 0.2)"
-        : "0 3px 10px rgb(255 255 255 / 0.2)"};
+    theme.name === "light"
+      ? "0 3px 10px rgb(0 0 0 / 0.2)"
+      : "0 3px 10px rgb(255 255 255 / 0.2)"};
 
     .card-img-top {
-      height: 50%;
+      height: ${sizes.cardImage};
       object-fit: contain;
-      margin-top: 2rem;
+      margin-top: ${spacing.xl};
     }
 
     .card-body {
       .card-title {
-        margin-top: 1.5rem; // Add this line to shift name down
+        margin-top: ${spacing.lg};
       }
     }
 
     .card-link {
       text-decoration: none;
-      font-size: 1.5rem;
+      font-size: ${spacing.lg};
 
       &:hover {
         color: ${({ theme }) =>
-          theme.name === "light" ? "var(--bs-dark)" : "var(--bs-light)"};
+    theme.name === "light" ? "var(--bs-dark)" : "var(--bs-light)"};
       }
     }
 
     .card-footer {
       border-top: var(--border);
       background: ${({ theme }) =>
-        theme.name === "light" ? "" : "var(--bs-gray-dark)"};
+    theme.name === "light" ? "" : "var(--bs-gray-dark)"};
 
       .card-link {
         color: ${({ theme }) =>
-          theme.name === "light" ? "var(--bs-dark)" : "var(--bs-light)"};
+    theme.name === "light" ? "var(--bs-dark)" : "var(--bs-light)"};
 
         &:hover {
           color: var(--bs-primary);
@@ -82,19 +86,19 @@ const ProjectCard = ({ demo, description, image, name, url }) => {
       <Card>
         <Card.Img
           variant="top"
-          src={image ? image : GH}
+          src={image || GH}
           alt={name}
           className="mx-auto"
         />
         <Card.Body className="overflow-auto text-center">
           <Card.Title>{name}</Card.Title>
           <Card.Text>{description}</Card.Text>
-          {/* {demo !== (undefined && null && "") ? (
+          {isValidUrl(demo) && (
             <Card.Link href={demo}>
               {"Live Demo "}
               <Icon icon="icon-park-outline:code-computer" />
             </Card.Link>
-          ) : null} */}
+          )}
         </Card.Body>
         <Card.Footer className="text-center">
           <Card.Link href={url}>

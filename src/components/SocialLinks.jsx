@@ -7,6 +7,8 @@ import { useGetUsersQuery, useGetSocialsQuery } from "../app/apiSlice";
 import { Icon } from "@iconify/react";
 // Config
 import { Blog } from "../config";
+// Utils
+import { isValidString, isValidArray } from "../utils";
 
 // #region styled-components
 const StyledSocialLinks = styled.div`
@@ -15,6 +17,19 @@ const StyledSocialLinks = styled.div`
   }
 `;
 // #endregion
+
+// Social media icon mapping
+const getSocialIcon = (provider) => {
+  const iconMap = {
+    linkedin: "fa-brands:linkedin",
+    twitter: "fa6-brands:square-x-twitter", 
+    facebook: "fa-brands:facebook-square",
+    instagram: "fa-brands:instagram-square",
+    tiktok: "fa-brands:tiktok",
+  };
+  
+  return <Icon icon={iconMap[provider] || "ph:link-bold"} />;
+};
 
 // #region component
 const SocialLinks = () => {
@@ -31,55 +46,39 @@ const SocialLinks = () => {
 
   return (
     <StyledSocialLinks>
-      <a
-        href={userData.html_url}
-        aria-label="Check out my GitHub profile."
-        className="link-icons"
-      >
-        <Icon icon="icomoon-free:github" />
-      </a>
-      {isSuccess &&
-        socialsData.map((element, index) => {
-          let icon;
-          switch (element.provider) {
-            case "linkedin":
-              icon = <Icon icon="fa-brands:linkedin" />;
-              break;
-            case "twitter":
-              icon = <Icon icon="fa6-brands:square-x-twitter" />;
-              break;
-            case "facebook":
-              icon = <Icon icon="fa-brands:facebook-square" />;
-              break;
-            case "instagram":
-              icon = <Icon icon="fa-brands:instagram-square" />;
-              break;
-            case "tiktok":
-              icon = <Icon icon="fa-brands:tiktok" />;
-              break;
-
-            default:
-              icon = <Icon icon="ph:link-bold" />;
-              break;
-          }
-          return (
-            <a
-              key={index}
-              href={element.url}
-              aria-label="External link"
-              className="link-icons"
-            >
-              {icon}
-            </a>
-          );
-        })}
-      {userData.blog && (
+      {/* GitHub link - always show if userData exists */}
+      {isValidString(userData?.html_url) && (
         <a
-          href={userData.blog}
-          aria-label="External link"
+          href={userData.html_url}
+          aria-label="Check out my GitHub profile."
           className="link-icons"
         >
-          {Blog ? Blog : <Icon icon="ph:link-bold" />}
+          <Icon icon="icomoon-free:github" />
+        </a>
+      )}
+      
+      {/* Social media links */}
+      {isSuccess && isValidArray(socialsData) && 
+        socialsData.map((social, index) => (
+          <a
+            key={`${social.provider}-${index}`}
+            href={social.url}
+            aria-label={`Visit ${social.provider} profile`}
+            className="link-icons"
+          >
+            {getSocialIcon(social.provider)}
+          </a>
+        ))
+      }
+      
+      {/* Blog link */}
+      {isValidString(userData?.blog) && (
+        <a
+          href={userData.blog}
+          aria-label="Visit blog"
+          className="link-icons"
+        >
+          {Blog || <Icon icon="ph:link-bold" />}
         </a>
       )}
     </StyledSocialLinks>

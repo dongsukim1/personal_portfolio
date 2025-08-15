@@ -7,27 +7,34 @@ import PropTypes from "prop-types";
 import { Element } from "react-scroll";
 import { Col, Container, Row } from "react-bootstrap";
 import Title from "./Title";
+// Theme
+import { sizes, spacing } from "../theme/tokens";
+// Utils
+import { isValidString } from "../utils";
+// Images
+import profilePhoto from "../images/profile_photo.jpg";
 
 // #region styled-components
 const StyledAboutMe = styled.section`
   p {
     font-size: 1.25rem;
   }
-  .img {
-    width: 18rem;
-    height: 18rem;
+  
+  .avatar-img {
+    width: ${sizes.avatar.sm};
+    height: ${sizes.avatar.sm};
   }
 `;
 // #endregion
 
 // #region component
 const propTypes = {
-  avatar_url: PropTypes.string.isRequired,
+  // avatar_url: PropTypes.string, // Made optional to use custom image instead
   bio: PropTypes.string,
   moreInfo: PropTypes.string,
 };
 
-const AboutMe = ({ avatar_url, bio, moreInfo }) => {
+const AboutMe = ({bio, moreInfo }) => {
   return (
     <Element name={"About"} id="about">
       <StyledAboutMe className="section">
@@ -38,17 +45,16 @@ const AboutMe = ({ avatar_url, bio, moreInfo }) => {
           <Row className="align-items-center mt-5">
             <Col className="d-flex flex-column text-center">
               <Container>
-                {bio && <p>{bio}</p>}
-                {moreInfo && <p>{moreInfo}</p>}
+                {isValidString(bio) && <p>{bio}</p>}
+                {isValidString(moreInfo) && <p>{moreInfo}</p>}
               </Container>
             </Col>
             <Col className="d-none d-md-block text-center">
               <img
-                src={avatar_url}
-                alt="GitHub Avatar"
+                src={profilePhoto}
+                alt="Profile Photo"
                 loading="lazy"
-                className="mx-auto rounded-circle border border-primary-subtle"
-                style={{ width: "15rem", height: "15rem" }}
+                className="mx-auto rounded-circle border border-primary-subtle avatar-img"
               />
             </Col>
           </Row>

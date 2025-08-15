@@ -27,6 +27,20 @@ export const siteConfig = {
   url: "https://dongsukim1.github.io/personal_portfolio/"
 };
 
+// Navigation configuration
+export const navigationConfig = {
+  routes: [
+    { id: "home-route", name: "Home", route: "/" },
+    { id: "projects-route", name: "All Projects", route: "/All-Projects" },
+  ],
+  sections: [
+    { id: "home-section", name: "Home", to: "Home" },
+    { id: "about-section", name: "About Me", to: "About" },
+    { id: "skills-section", name: "Skills", to: "Skills" },
+    { id: "projects-section", name: "Projects", to: "Projects" },
+  ],
+};
+
 // Legacy export for backward compatibility
 export const displayName = siteConfig.displayName;
 
@@ -48,7 +62,7 @@ export { HeroDark as Dark };
   Add a second paragraph for the about me section.
 */
 export const moreInfo =
-  "I am a recent Bioengineering/Computer Science graduate from Berkeley seeking opportunities to apply interdisciplinary problem-solving skills to real world software/ML systems.";
+  "I am a recent Bioengineering/Computer Science graduate from Berkeley seeking opportunities to apply interdisciplinary problem-solving skills to software/ML solutions!";
 /* Skills
  ************************************************************** 
   Add or remove skills in the SAME format below, choose icons here - https://icon-sets.iconify.design/

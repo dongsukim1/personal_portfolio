@@ -13,6 +13,10 @@ import { useErrorBoundary } from "react-error-boundary";
 import { Link } from "react-scroll";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import SocialLinks from "./SocialLinks";
+// Contexts
+import { useConfig } from "../contexts/ConfigContext";
+// Utils
+import { isValidString } from "../utils";
 
 // #region styled-components
 const spin = keyframes`
@@ -100,6 +104,9 @@ const propTypes = {
 
 const Hero = ({ name }) => {
   const { showBoundary } = useErrorBoundary();
+  const { site } = useConfig();
+
+  const displayName = isValidString(name) ? name : site.displayName;
 
   return (
     <StyledHero>
@@ -107,7 +114,7 @@ const Hero = ({ name }) => {
         <Row className="align-items-center text-center">
           <Col>
             <h1 className="mb-3 display-3 title">
-              {name === null ? "Dong Su Kim" : name}
+              {displayName}
             </h1>
             <div className="d-flex align-items-center justify-content-center">
               <SocialLinks />

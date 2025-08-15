@@ -6,12 +6,13 @@ import { selectMode } from "../app/appSlice";
 import { Element } from "react-scroll";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Title from "./Title";
-// Config
-import { skillData, resume } from "../config";
+// Contexts
+import { useConfig } from "../contexts/ConfigContext";
 
 // #region component
 const Skills = () => {
   const theme = useSelector(selectMode);
+  const { skills, content } = useConfig();
 
   return (
     <Element name={"Skills"} id="skills">
@@ -21,19 +22,17 @@ const Skills = () => {
             <Title size={"h2"} text={"Skills"} />
           </Container>
           <Row className="mt-3 align-items-center">
-            {skillData.map((skills) => {
-              return (
-                <Col xs={4} key={skills.id} className="my-md-5">
-                  <figure>
-                    {skills.skill}
-                    <figcaption>{skills.name}</figcaption>
-                  </figure>
-                </Col>
-              );
-            })}
+            {skills.map((skill) => (
+              <Col xs={4} key={skill.id} className="my-md-5">
+                <figure>
+                  {skill.skill}
+                  <figcaption>{skill.name}</figcaption>
+                </figure>
+              </Col>
+            ))}
           </Row>
-          {resume && (
-            <a href={resume}>
+          {content.resume && (
+            <a href={content.resume}>
               <Button
                 size="lg"
                 variant={theme === "light" ? "outline-dark" : "outline-light"}

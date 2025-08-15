@@ -14,6 +14,11 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import Loading from "./Loading";
 import Title from "./Title";
 import ProjectCard from "./ProjectCard";
+import ErrorDisplay from "./ErrorDisplay";
+// Constants
+import { ERROR_MESSAGES, LIMITS } from "../constants";
+// Utils
+import { isValidArray } from "../utils";
 
 // #region component
 const Projects = () => {
@@ -32,12 +37,12 @@ const Projects = () => {
   } else if (isSuccess) {
     content = (
       <>
-        {!error && projects.length === 0 && (
+        {!error && !isValidArray(projects) && (
           <h2 className="text-center">
-            Oops, you do not have any GitHub projects yet...
+            {ERROR_MESSAGES.NO_PROJECTS}
           </h2>
         )}
-        {mainProjects.length !== 0 && (
+        {isValidArray(mainProjects) && (
           <>
             <Row xs={1} md={2} lg={3} className="g-4 justify-content-center">
               {mainProjects.map((element) => {
@@ -54,7 +59,7 @@ const Projects = () => {
                 );
               })}
             </Row>
-            {projects.length > 3 && (
+            {projects.length > LIMITS.MAX_MAIN_PROJECTS && (
               <Container className="text-center mt-5">
                 <Link to="/All-Projects">
                   <Button
@@ -73,11 +78,7 @@ const Projects = () => {
       </>
     );
   } else if (isError) {
-    content = (
-      <Container className="d-flex align-items-center justify-content-center">
-        <h2>{`${error.status} - check getProjects query in src/app/apiSlice.js`}</h2>
-      </Container>
-    );
+    content = <ErrorDisplay error={error} context="getProjects query in src/app/apiSlice.js" />;
   }
 
   return (

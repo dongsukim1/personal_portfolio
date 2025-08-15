@@ -22,6 +22,12 @@ import ProjectCard from "../components/ProjectCard";
 import BackToTop from "../components/BackToTop";
 // Hooks
 import { useTitle, TITLES } from "../hooks/useTitle";
+// Components
+import ErrorDisplay from "../components/ErrorDisplay";
+// Constants
+import { PAGINATION, ARIA_LABELS } from "../constants";
+// Utils
+import { isValidString, isValidArray } from "../utils";
 
 // #region styled-components
 const StyledSection = styled.section`
@@ -52,57 +58,37 @@ const AllProjects = () => {
   useTitle(TITLES.ALL_PROJECTS, userData);
 
   React.useEffect(() => {
-    if (searchInput !== "") {
-      const filteredData = data.filter((item) => {
-        return item.name.toLowerCase().includes(searchInput.toLowerCase());
-      });
-      const tempPageItems = [];
-      for (
-        let number = 1;
-        number <= Math.ceil(filteredData.length / 6);
-        number++
-      ) {
-        tempPageItems.push(
-          <Pagination.Item
-            key={number}
-            active={number === activePage}
-            onClick={() => setActivePage(number)}
-          >
-            {number}
-          </Pagination.Item>
-        );
-        setPageItems([...tempPageItems]);
-      }
-      if (activePage === 1) {
-        setFilteredResults(filteredData.slice(0, 6));
-      } else {
-        setFilteredResults(
-          filteredData.slice((activePage - 1) * 6, (activePage - 1) * 6 + 6)
-        );
-      }
-    } else {
-      const tempPageItems = [];
-      for (let number = 1; number <= Math.ceil(data.length / 6); number++) {
-        tempPageItems.push(
-          <Pagination.Item
-            key={number}
-            active={number === activePage}
-            onClick={() => setActivePage(number)}
-          >
-            {number}
-          </Pagination.Item>
-        );
-        setPageItems([...tempPageItems]);
-      }
-      if (activePage === 1) {
-        setFilteredResults(data.slice(0, 6));
-      } else {
-        setFilteredResults(
-          data.slice((activePage - 1) * 6, (activePage - 1) * 6 + 6)
-        );
-      }
-    }
-  }, [searchInput, data, pageItems.length, activePage]);
+    const { ITEMS_PER_PAGE } = PAGINATION;
+    
+    // Filter data based on search input
+    const filteredData = isValidString(searchInput)
+      ? data.filter((item) => 
+          item.name.toLowerCase().includes(searchInput.toLowerCase())
+        )
+      : data;
+
+    // Generate pagination items
+    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+    const tempPageItems = Array.from({ length: totalPages }, (_, index) => {
+      const pageNumber = index + 1;
+      return (
+        <Pagination.Item
+          key={pageNumber}
+          active={pageNumber === activePage}
+          onClick={() => setActivePage(pageNumber)}
+        >
+          {pageNumber}
+        </Pagination.Item>
+      );
+    });
+    
+    setPageItems(tempPageItems);
+
+    // Set current page results
+    const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setFilteredResults(filteredData.slice(startIndex, endIndex));
+  }, [searchInput, data, activePage]);
 
   React.useEffect(() => {
     setActivePage(1);
@@ -132,7 +118,7 @@ const AllProjects = () => {
             </InputGroup.Text>
             <FormControl
               placeholder="Project name"
-              aria-label="Search projects"
+              aria-label={ARIA_LABELS.SEARCH_PROJECTS}
               aria-describedby="search"
               onChange={(e) => setSearchInput(e.currentTarget.value)}
             />
@@ -197,11 +183,7 @@ const AllProjects = () => {
       </>
     );
   } else if (isError) {
-    content = (
-      <Container className="d-flex align-items-center justify-content-center">
-        <h2>{`${error.status} - check URLs in  src/app/apiSlice.js`}</h2>
-      </Container>
-    );
+    content = <ErrorDisplay error={error} context="projects API" />;
   }
 
   return (

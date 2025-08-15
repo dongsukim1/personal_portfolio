@@ -12,22 +12,9 @@ import defaultLogo from "../images/defaultNavLogo.svg";
 import { Link as ScrollLink } from "react-scroll";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import ThemeToggle from "./ThemeToggle";
+// Contexts
+import { useConfig } from "../contexts/ConfigContext";
 
-// #region constants
-const navLinks = {
-  routes: [
-    { id: "1R", name: "Home", route: "/" },
-    { id: "2R", name: "All Projects", route: "/All-Projects" },
-  ],
-  to: [
-    { id: "1T", name: "Home", to: "Home" },
-    { id: "2T", name: "About Me", to: "About" },
-    { id: "3T", name: "Skills", to: "Skills" },
-    { id: "4T", name: "Projects", to: "Projects" },
-    // { id: "5T", name: "Contact", to: "Contact" },
-    // { id: "6T", name: "Bioinformatics", to: "Bioinformatics"}
-  ],
-};
 // #endregion
 
 // #region styled-components
@@ -58,6 +45,7 @@ const NavBar = ({ Logo = defaultLogo, callBack, closeDelay = 125 }) => {
   const theme = useSelector(selectMode);
   const [isExpanded, setisExpanded] = React.useState(false);
   const { pathname } = useLocation();
+  const { navigation } = useConfig();
 
   return (
     <StyledDiv>
@@ -87,47 +75,40 @@ const NavBar = ({ Logo = defaultLogo, callBack, closeDelay = 125 }) => {
           />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav navbarScroll className="me-auto">
-              {pathname === "/"
-                ? navLinks.to.map((el) => {
-                    return (
-                      <Nav.Item key={el.id}>
-                        <ScrollLink
-                          to={el.to}
-                          spy={true}
-                          activeClass="active"
-                          className="nav-link"
-                          onClick={() => {
-                            setTimeout(() => {
-                              setisExpanded(false);
-                            }, closeDelay);
-                          }}
-                        >
-                          {el.name}
-                        </ScrollLink>
-                      </Nav.Item>
-                    );
-                  })
-                : navLinks.routes.map((el) => {
-                    return (
-                      <Nav.Item key={el.id}>
-                        <Link
-                          to={el.route}
-                          className={
-                            pathname === el.route
-                              ? "nav-link active"
-                              : "nav-link"
-                          }
-                          onClick={() => {
-                            setTimeout(() => {
-                              setisExpanded(false);
-                            }, closeDelay);
-                          }}
-                        >
-                          {el.name}
-                        </Link>
-                      </Nav.Item>
-                    );
-                  })}
+              {pathname === "/" 
+                ? navigation.sections.map((section) => (
+                    <Nav.Item key={section.id}>
+                      <ScrollLink
+                        to={section.to}
+                        spy={true}
+                        activeClass="active"
+                        className="nav-link"
+                        onClick={() => {
+                          setTimeout(() => {
+                            setisExpanded(false);
+                          }, closeDelay);
+                        }}
+                      >
+                        {section.name}
+                      </ScrollLink>
+                    </Nav.Item>
+                  ))
+                : navigation.routes.map((route) => (
+                    <Nav.Item key={route.id}>
+                      <Link
+                        to={route.route}
+                        className={`nav-link ${pathname === route.route ? 'active' : ''}`}
+                        onClick={() => {
+                          setTimeout(() => {
+                            setisExpanded(false);
+                          }, closeDelay);
+                        }}
+                      >
+                        {route.name}
+                      </Link>
+                    </Nav.Item>
+                  ))
+              }
             </Nav>
             <Nav>
               <ThemeToggle
