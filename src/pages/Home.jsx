@@ -1,4 +1,3 @@
-import React from "react";
 // State
 import { useGetUsersQuery } from "../app/apiSlice";
 // Components

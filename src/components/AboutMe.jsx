@@ -1,4 +1,3 @@
-import React from "react";
 // Styles
 import styled from "styled-components";
 // State
@@ -8,7 +7,7 @@ import { Element } from "react-scroll";
 import { Col, Container, Row } from "react-bootstrap";
 import Title from "./Title";
 // Theme
-import { sizes, spacing } from "../theme/tokens";
+import { sizes} from "../theme/tokens";
 // Utils
 import { isValidString } from "../utils";
 // Images

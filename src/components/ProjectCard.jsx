@@ -111,7 +111,7 @@ const ProjectCard = ({ demo, description, image, name, url, hasOnnxDemo = false 
                   onClick={() => setShowDemo(true)}
                 >
                   <Icon icon="mdi:brain" className="me-1" />
-                  Try AI Demo
+                  Try Demo - Insert bobcat image!
                 </Button>
               )}
               

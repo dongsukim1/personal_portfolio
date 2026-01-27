@@ -63,7 +63,7 @@ export { HeroDark as Dark };
   Add a second paragraph for the about me section.
 */
 export const moreInfo =
-  "I am a recent Bioengineering/Computer Science graduate from Berkeley seeking opportunities to apply interdisciplinary problem-solving skills to software/ML solutions!";
+  "I am a recent Computer Science graduate from Berkeley seeking New Grad / Apprentice / Intern level Software Engineering opportunities. I have a strong foundation in programming languages such as Python, Java, and C, and I am passionate about leveraging AI and machine learning to solve real-world problems.";
 /* Skills
  ************************************************************** 
   Add or remove skills in the SAME format below, choose icons here - https://icon-sets.iconify.design/
