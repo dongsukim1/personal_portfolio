@@ -20,13 +20,6 @@ export const isValidUrl = (value) => {
   }
 };
 
-// Safe property access
-export const safeGet = (obj, path, defaultValue = null) => {
-  return path.split('.').reduce((current, key) => {
-    return current?.[key] ?? defaultValue;
-  }, obj);
-};
-
 // Theme utilities
 export const getStoredTheme = () => localStorage.getItem("theme");
 
@@ -50,17 +43,4 @@ export const setTheme = (theme) => {
   } else {
     document.documentElement.setAttribute("data-bs-theme", theme);
   }
-};
-
-// Contact Form
-export const postData = async (url, data) => {
-  const response = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  });
-  return response;
 };

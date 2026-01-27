@@ -27,7 +27,7 @@ import ErrorDisplay from "../components/ErrorDisplay";
 // Constants
 import { PAGINATION, ARIA_LABELS } from "../constants";
 // Utils
-import { isValidString, isValidArray } from "../utils";
+import { isValidString } from "../utils";
 
 // #region styled-components
 const StyledSection = styled.section`
@@ -46,8 +46,6 @@ const StyledSection = styled.section`
 // #region component
 const AllProjects = () => {
   const [searchInput, setSearchInput] = React.useState("");
-  const [filteredResults, setFilteredResults] = React.useState([]);
-  const [pageItems, setPageItems] = React.useState([]);
   const [activePage, setActivePage] = React.useState(1);
   const data = useSelector(selectProjects);
   const { data: userData } = useGetUsersQuery();
@@ -57,19 +55,19 @@ const AllProjects = () => {
   // Use centralized title management
   useTitle(TITLES.ALL_PROJECTS, userData);
 
-  React.useEffect(() => {
-    const { ITEMS_PER_PAGE } = PAGINATION;
-    
-    // Filter data based on search input
-    const filteredData = isValidString(searchInput)
-      ? data.filter((item) => 
+  const filteredData = React.useMemo(() => {
+    return isValidString(searchInput)
+      ? data.filter((item) =>
           item.name.toLowerCase().includes(searchInput.toLowerCase())
         )
       : data;
+  }, [data, searchInput]);
 
-    // Generate pagination items
-    const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
-    const tempPageItems = Array.from({ length: totalPages }, (_, index) => {
+  const { ITEMS_PER_PAGE } = PAGINATION;
+  const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
+
+  const pageItems = React.useMemo(() => {
+    return Array.from({ length: totalPages }, (_, index) => {
       const pageNumber = index + 1;
       return (
         <Pagination.Item
@@ -81,18 +79,23 @@ const AllProjects = () => {
         </Pagination.Item>
       );
     });
-    
-    setPageItems(tempPageItems);
+  }, [activePage, totalPages]);
 
-    // Set current page results
+  const filteredResults = React.useMemo(() => {
     const startIndex = (activePage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
-    setFilteredResults(filteredData.slice(startIndex, endIndex));
-  }, [searchInput, data, activePage]);
+    return filteredData.slice(startIndex, endIndex);
+  }, [activePage, filteredData, ITEMS_PER_PAGE]);
 
   React.useEffect(() => {
     setActivePage(1);
-  }, [searchInput]);
+  }, [searchInput, data]);
+
+  React.useEffect(() => {
+    if (totalPages > 0 && activePage > totalPages) {
+      setActivePage(totalPages);
+    }
+  }, [activePage, totalPages]);
 
   if (isLoading) {
     content = (
