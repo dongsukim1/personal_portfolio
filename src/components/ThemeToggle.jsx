@@ -18,7 +18,7 @@ const StyledSwitch = styled.label`
   transition: var(--transition);
   border: 2px solid;
 
-  /* Hide defualt checkbox */
+  /* Hide default checkbox */
   input[type="checkbox"] {
     height: 0;
     width: 0;

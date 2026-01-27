@@ -54,6 +54,7 @@ const Projects = () => {
                       description={element.description}
                       url={element.html_url}
                       demo={element.homepage}
+                      hasOnnxDemo={element.hasOnnxDemo}
                     />
                   </Col>
                 );
