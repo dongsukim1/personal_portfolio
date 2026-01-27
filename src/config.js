@@ -43,6 +43,28 @@ export const navigationConfig = {
   ],
 };
 
+// External resources configuration
+export const externalResourcesConfig = [
+  {
+    id: "resume-resource",
+    name: "Resume",
+    url: "/resume.pdf",
+    icon: "fa6-solid:file-pdf",
+    description: "Download my resume",
+    type: "download",
+    showOnMobile: true,
+  },
+  {
+    id: "research-resource", 
+    name: "Research",
+    url: "/research",
+    icon: "fa6-solid:microscope",
+    description: "View my research work",
+    type: "page",
+    showOnMobile: true,
+  }
+];
+
 // Legacy export for backward compatibility
 export const displayName = siteConfig.displayName;
 

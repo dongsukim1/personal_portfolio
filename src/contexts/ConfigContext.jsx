@@ -5,12 +5,14 @@ import {
     skillData,
     projectsConfig,
     navigationConfig,
+    externalResourcesConfig,
     footerTheme,
     navLogo,
     moreInfo,
     resume,
     onnxDemoConfig
 } from '../config';
+import { processExternalResources } from '../utils/urlUtils';
 
 const ConfigContext = createContext();
 
@@ -23,6 +25,9 @@ export const useConfig = () => {
 };
 
 const ConfigProvider = ({ children }) => {
+    // Process and validate external resources
+    const validatedExternalResources = processExternalResources(externalResourcesConfig);
+
     // Derive legacy arrays from unified config for backward compatibility
     const homepageProjects = projectsConfig.filter(p => p.showOnHomepage);
     const filteredProjects = homepageProjects.map(p => p.repoName);
@@ -37,7 +42,10 @@ const ConfigProvider = ({ children }) => {
     const config = {
         site: siteConfig,
         skills: skillData,
-        navigation: navigationConfig,
+        navigation: {
+            ...navigationConfig,
+            externalResources: validatedExternalResources,
+        },
         projects: {
             // New unified config
             config: projectsConfig,
