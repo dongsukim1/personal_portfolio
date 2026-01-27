@@ -11,7 +11,7 @@ const createImageMap = (projectCardImages) => {
 };
 
 // Transform raw GitHub data into app format
-const transformProjectData = (projectsData, imageMap, displayNames) => {
+const transformProjectData = (projectsData, imageMap, displayNames, onnxProjects) => {
   return projectsData.map(element => ({
     id: element.id,
     homepage: element.homepage,
@@ -20,6 +20,7 @@ const transformProjectData = (projectsData, imageMap, displayNames) => {
     originalName: element.name,
     html_url: element.html_url,
     image: imageMap.get(element.name.toLowerCase()) || null,
+    hasOnnxDemo: onnxProjects.includes(element.name),
   })).map(project => ({
     ...project,
     name: displayNames[project.originalName] || project.originalName,
@@ -37,7 +38,8 @@ export const useProjectData = (projectsData) => {
     const transformedData = transformProjectData(
       projectsData, 
       imageMap, 
-      projectConfig.displayNames
+      projectConfig.displayNames,
+      projectConfig.withOnnxDemo
     );
 
     dispatch(setProjects(transformedData));

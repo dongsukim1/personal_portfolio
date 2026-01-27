@@ -13,6 +13,7 @@ import HeroDark from "./images/hero-dark.jpg";
 import pp1 from "./images/project_photo1.jpg"
 import pp2 from "./images/project_photo2.jpg"
 import pp3 from "./images/temp_project_image.jpg"
+import pp4 from  "./images/wildlife_classification.png"
 
 
 //Github Username
@@ -117,15 +118,23 @@ export const resume = null;
  ************************************************************** 
   List the repo names (string - "your-repo-name") you want to include (they will be sorted alphabetically). If empty, only the first 3 will be included.
 */
-export const filteredProjects = ["Blood_Protein_Classification", "Image_Classification", "data_augmentation_examples"];
+export const filteredProjects = ["cat_classification", "Image_Classification", "data_augmentation_examples"];
 
 // Custom display names for projects (optional - if not specified, repo name will be used)
 export const projectDisplayNames = {
   "data_augmentation_examples": "Sequence Augmentation Project",
   "Image_Classification": "Image Classification Project",
-  "Blood_Protein_Classification": "Blood Protein Classification Project"
+  "Blood_Protein_Classification": "Blood Protein Classification Project",
+  "cat_classification": "Wildcat Conservation Project"
   // "repo-name": "Custom Display Name"
 };
+
+// Projects with ONNX demos (specify which projects have interactive AI demos)
+export const projectsWithOnnxDemo = [
+  "cat_classification", // Add the repo names that should have ONNX demos
+  "Image_Classification",
+  // "Another_ML_Project",
+];
 
 // Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
 export const projectCardImages = [
@@ -140,6 +149,10 @@ export const projectCardImages = [
   {
     name: "data_augmentation_examples",
     image: pp3
+  },
+  {
+    name: "cat_classification",
+    image: pp4
   }
 ];
 
@@ -152,3 +165,23 @@ export const projectCardImages = [
 
 // Footer icons theme (light or dark)
 export const footerTheme = "dark";
+
+/* ONNX Demo Configuration
+ ************************************************************** 
+  Configure your ONNX model demo here
+*/
+export const onnxDemoConfig = {
+  title: "Image Classification Demo",
+  description: "Upload an image to see AI-powered classification in action. The model runs entirely in your browser!",
+  modelUrl: "/models/your-model.onnx", // Place your .onnx file in public/models/
+  inputName: "input", // Check your model's input name
+  outputName: "output", // Check your model's output name  
+  inputSize: 224, // Model input image size (e.g., 224x224)
+  classes: [
+    // Add your model's class labels here
+    "Class 1",
+    "Class 2", 
+    "Class 3",
+    // ... add all your classes
+  ]
+};

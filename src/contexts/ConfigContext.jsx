@@ -6,11 +6,13 @@ import {
     filteredProjects,
     projectCardImages,
     projectDisplayNames,
+    projectsWithOnnxDemo,
     navigationConfig,
     footerTheme,
     navLogo,
     moreInfo,
-    resume
+    resume,
+    onnxDemoConfig
 } from '../config';
 
 const ConfigContext = createContext();
@@ -32,7 +34,9 @@ const ConfigProvider = ({ children }) => {
             filtered: filteredProjects,
             images: projectCardImages,
             displayNames: projectDisplayNames,
+            withOnnxDemo: projectsWithOnnxDemo,
         },
+        onnx: onnxDemoConfig,
         ui: {
             footerTheme,
             navLogo,

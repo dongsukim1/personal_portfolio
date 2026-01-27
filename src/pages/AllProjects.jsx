@@ -124,33 +124,18 @@ const AllProjects = () => {
             />
           </InputGroup>
           <Row xs={1} md={2} lg={3} className="g-4 justify-content-center row">
-            {searchInput.length > 0
-              ? filteredResults.map((element) => {
-                  return (
-                    <Col key={element.id}>
-                      <ProjectCard
-                        image={element.image}
-                        name={element.name}
-                        description={element.description}
-                        url={element.html_url}
-                        demo={element.homepage}
-                      />
-                    </Col>
-                  );
-                })
-              : filteredResults.map((element) => {
-                  return (
-                    <Col key={element.id}>
-                      <ProjectCard
-                        image={element.image}
-                        name={element.name}
-                        description={element.description}
-                        url={element.html_url}
-                        demo={element.homepage}
-                      />
-                    </Col>
-                  );
-                })}
+            {filteredResults.map((element) => (
+              <Col key={element.id}>
+                <ProjectCard
+                  image={element.image}
+                  name={element.name}
+                  description={element.description}
+                  url={element.html_url}
+                  demo={element.homepage}
+                  hasOnnxDemo={element.hasOnnxDemo}
+                />
+              </Col>
+            ))}
           </Row>
           <Container className="d-flex justify-content-center mt-5">
             {pageItems.length <= 2 ? (
