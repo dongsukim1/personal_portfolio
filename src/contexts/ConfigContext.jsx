@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 import {
     siteConfig,
     skillData,
-    filteredProjects,
-    projectCardImages,
-    projectDisplayNames,
-    projectsWithOnnxDemo,
+    projectsConfig,
     navigationConfig,
     footerTheme,
     navLogo,
@@ -26,11 +23,25 @@ export const useConfig = () => {
 };
 
 const ConfigProvider = ({ children }) => {
+    // Derive legacy arrays from unified config for backward compatibility
+    const homepageProjects = projectsConfig.filter(p => p.showOnHomepage);
+    const filteredProjects = homepageProjects.map(p => p.repoName);
+    const projectCardImages = projectsConfig.map(p => ({ name: p.repoName, image: p.image }));
+    const projectDisplayNames = Object.fromEntries(
+        projectsConfig.map(p => [p.repoName, p.displayName])
+    );
+    const projectsWithOnnxDemo = projectsConfig
+        .filter(p => p.hasOnnxDemo)
+        .map(p => p.repoName);
+
     const config = {
         site: siteConfig,
         skills: skillData,
         navigation: navigationConfig,
         projects: {
+            // New unified config
+            config: projectsConfig,
+            // Legacy derived arrays for backward compatibility
             filtered: filteredProjects,
             images: projectCardImages,
             displayNames: projectDisplayNames,

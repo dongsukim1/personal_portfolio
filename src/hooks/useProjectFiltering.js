@@ -11,12 +11,21 @@ export const useProjectFiltering = () => {
   useEffect(() => {
     if (!projects.length) return;
 
-    const { filtered: filteredProjects } = projectConfig;
+    // Get projects marked for homepage display from unified config
+    const homepageRepoNames = projectConfig.config
+      .filter(p => p.showOnHomepage)
+      .map(p => p.repoName);
     
-    if (filteredProjects?.length > 0) {
+    // Debug logging
+    console.log('All projects from GitHub:', projects.map(p => ({ name: p.name, originalName: p.originalName })));
+    console.log('Homepage projects config:', homepageRepoNames);
+    
+    if (homepageRepoNames.length > 0) {
       const filteredData = projects.filter(project =>
-        filteredProjects.includes(project.originalName || project.name)
+        homepageRepoNames.includes(project.originalName || project.name)
       );
+      
+      console.log('Matched homepage projects:', filteredData.map(p => ({ name: p.name, originalName: p.originalName })));
       
       const mainProjects = filteredData.length > 0 
         ? filteredData 
@@ -24,7 +33,8 @@ export const useProjectFiltering = () => {
         
       dispatch(setMainProjects(mainProjects));
     } else {
+      // Fallback: show first 3 projects if no homepage projects configured
       dispatch(setMainProjects(projects.slice(0, 3)));
     }
-  }, [projects, projectConfig, dispatch]);
+  }, [projects, projectConfig.config, dispatch]);
 };

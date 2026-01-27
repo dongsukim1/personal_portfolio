@@ -3,27 +3,35 @@ import { useDispatch } from 'react-redux';
 import { setProjects } from '../app/projectsSlice';
 import { useConfig } from '../contexts/ConfigContext';
 
-// Utility function for efficient image matching
-const createImageMap = (projectCardImages) => {
-  return new Map(
-    projectCardImages.map(img => [img.name.toLowerCase(), img.image])
-  );
+// Create lookup maps from unified config for efficient matching
+const createProjectMaps = (projectsConfig) => {
+  const imageMap = new Map();
+  const displayNameMap = new Map();
+  const onnxDemoMap = new Map();
+  
+  projectsConfig.forEach(project => {
+    const lowerName = project.repoName.toLowerCase();
+    imageMap.set(lowerName, project.image);
+    displayNameMap.set(project.repoName, project.displayName);
+    onnxDemoMap.set(project.repoName, project.hasOnnxDemo);
+  });
+  
+  return { imageMap, displayNameMap, onnxDemoMap };
 };
 
-// Transform raw GitHub data into app format
-const transformProjectData = (projectsData, imageMap, displayNames, onnxProjects) => {
+// Transform raw GitHub data into app format using unified config
+const transformProjectData = (projectsData, projectMaps) => {
+  const { imageMap, displayNameMap, onnxDemoMap } = projectMaps;
+  
   return projectsData.map(element => ({
     id: element.id,
     homepage: element.homepage,
     description: element.description,
-    name: element.name,
+    name: displayNameMap.get(element.name) || element.name,
     originalName: element.name,
     html_url: element.html_url,
     image: imageMap.get(element.name.toLowerCase()) || null,
-    hasOnnxDemo: onnxProjects.includes(element.name),
-  })).map(project => ({
-    ...project,
-    name: displayNames[project.originalName] || project.originalName,
+    hasOnnxDemo: onnxDemoMap.get(element.name) || false,
   }));
 };
 
@@ -34,14 +42,10 @@ export const useProjectData = (projectsData) => {
   useEffect(() => {
     if (!projectsData?.length) return;
 
-    const imageMap = createImageMap(projectConfig.images);
-    const transformedData = transformProjectData(
-      projectsData, 
-      imageMap, 
-      projectConfig.displayNames,
-      projectConfig.withOnnxDemo
-    );
+    // Use unified config instead of separate arrays
+    const projectMaps = createProjectMaps(projectConfig.config);
+    const transformedData = transformProjectData(projectsData, projectMaps);
 
     dispatch(setProjects(transformedData));
-  }, [projectsData, projectConfig.images, projectConfig.displayNames, dispatch]);
+  }, [projectsData, projectConfig.config, dispatch]);
 };

@@ -9,10 +9,11 @@ import HeroLight from "./images/hero-light.jpg";
 import HeroDark from "./images/hero-dark.jpg";
 
 // Projects Images (add your images to the images directory and import below)
-// import Logo from "./images/logo.svg";
-import pp1 from "./images/project_photo1.jpg"
+// Unused photos/projects commented out
+// import pp1 from "./images/project_photo1.jpg"
+// import pp3 from "./images/temp_project_image.jpg"
 import pp2 from "./images/project_photo2.jpg"
-import pp3 from "./images/temp_project_image.jpg"
+import pp5 from "./images/Hunger_logo.png"
 import pp4 from  "./images/wildlife_classification.png"
 
 
@@ -114,46 +115,44 @@ export const skillData = [
 // Resume link (string - "https://YourResumeUrl") - I am using CloudFront to share my resume (https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
 export const resume = null;
 
-/* Projects
+/* Projects Configuration
  ************************************************************** 
-  List the repo names (string - "your-repo-name") you want to include (they will be sorted alphabetically). If empty, only the first 3 will be included.
+  Unified project configuration - single source of truth for all project metadata
 */
-export const filteredProjects = ["cat_classification", "Image_Classification", "data_augmentation_examples"];
-
-// Custom display names for projects (optional - if not specified, repo name will be used)
-export const projectDisplayNames = {
-  "data_augmentation_examples": "Sequence Augmentation Project",
-  "Image_Classification": "Image Classification Project",
-  "Blood_Protein_Classification": "Blood Protein Classification Project",
-  "cat_classification": "Wildcat Conservation Project"
-  // "repo-name": "Custom Display Name"
-};
-
-// Projects with ONNX demos (specify which projects have interactive AI demos)
-export const projectsWithOnnxDemo = [
-  "cat_classification", // Add the repo names that should have ONNX demos
-  "Image_Classification",
-  // "Another_ML_Project",
-];
-
-// Replace the default GitHub image for matching repos below (images imported above - lines 7-8)
-export const projectCardImages = [
+export const projectsConfig = [
   {
-    name: "Blood_Protein_Classification",
-    image: pp2
+    repoName: "Blood_Protein_Classification",
+    displayName: "Blood Protein Classification Project",
+    image: pp2,
+    showOnHomepage: true,
+    hasOnnxDemo: false,
+    demoUrl: null,
   },
   {
-    name: "Image_Classification",
-    image: pp1,
+    repoName: "cat_classification", 
+    displayName: "Wildcat Conservation Project",
+    image: pp4,
+    showOnHomepage: true,
+    hasOnnxDemo: true,
+    demoUrl: null,
   },
   {
-    name: "data_augmentation_examples",
-    image: pp3
+    repoName: "Hunger",
+    displayName: "Hunger - Beli Clone", 
+    image: pp5,
+    showOnHomepage: true,
+    hasOnnxDemo: false,
+    demoUrl: null,
   },
-  {
-    name: "cat_classification",
-    image: pp4
-  }
+  // Add more projects here as needed
+  // {
+  //   repoName: "your-repo-name",
+  //   displayName: "Your Project Display Name",
+  //   image: yourImage,
+  //   showOnHomepage: true,
+  //   hasOnnxDemo: false,
+  //   demoUrl: "https://your-demo-url.com", // Optional external demo
+  // },
 ];
 
 /* Contact Info
