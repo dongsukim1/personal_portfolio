@@ -171,7 +171,6 @@ const NavBar = ({ Logo = defaultLogo, callBack, closeDelay = 125 }) => {
                           rel="noopener"
                           aria-label={resource.description || `${resource.name} - ${resource.type || 'external resource'}`}
                           tabIndex="0"
-                          role="link"
                           onClick={() => {
                             setTimeout(() => {
                               setisExpanded(false);
