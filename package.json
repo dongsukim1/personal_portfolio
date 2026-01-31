@@ -24,13 +24,15 @@
     "workbox-strategies": "^7.3.0"
   },
   "devDependencies": {
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
+    "cross-env": "^10.1.0",
     "gh-pages": "^6.3.0",
-    "react-scripts": "^5.0.1",
-    "@babel/plugin-transform-private-property-in-object": "^7.25.9"
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "cross-env PUBLIC_URL=/personal_portfolio npm run build",
     "deploy": "gh-pages -d build",
+    "deploy:redirect": "gh-pages -d redirect",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
