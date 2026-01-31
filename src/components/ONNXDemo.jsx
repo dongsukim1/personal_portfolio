@@ -48,7 +48,7 @@ const StyledDemo = styled.div`
 const ONNXDemo = ({ show, onHide, modelConfig }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [predictions, setPredictions] = useState(null);
   const [error, setError] = useState(null);
