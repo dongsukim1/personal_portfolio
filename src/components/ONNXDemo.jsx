@@ -66,7 +66,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
     
     try {
       // Dynamic import to avoid bundling issues
-      const ort = await import('onnxruntime-web');
+      // const ort = await import('onnxruntime-web');
       
       // Configure ONNX Runtime
       ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/';

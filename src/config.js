@@ -25,7 +25,7 @@ export const githubUsername = "dongsukim1";
 export const siteConfig = {
   displayName: "Dong Su Kim",
   siteName: "Portfolio",
-  description: "Bioengineering/Computer Science graduate from Berkeley",
+  description: "Computer Science/Bioengineering graduate from Berkeley",
   url: "https://dongsukim1.github.io/personal_portfolio/"
 };
 

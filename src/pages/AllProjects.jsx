@@ -46,8 +46,6 @@ const StyledSection = styled.section`
 // #region component
 const AllProjects = () => {
   const [searchInput, setSearchInput] = React.useState("");
-  // const [filteredResults, setFilteredResults] = React.useState([]);
-  // const [pageItems, setPageItems] = React.useState([]);
   const [activePage, setActivePage] = React.useState(1);
   const data = useSelector(selectProjects);
   const { data: userData } = useGetUsersQuery();
