@@ -51,7 +51,7 @@ const AboutMe = ({bio, moreInfo }) => {
             <Col className="d-none d-md-block text-center">
               <img
                 src={profilePhoto}
-                alt="Profile Photo"
+                alt="Blackshirt Headshot"
                 loading="lazy"
                 className="mx-auto rounded-circle border border-primary-subtle avatar-img"
               />
