@@ -1,6 +1,5 @@
 {
   "name": "personal_portfolio",
-  "homepage": "https://dongsukim1.github.io/personal_portfolio/",
   "version": "1.0.4",
   "private": true,
   "dependencies": {
