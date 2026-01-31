@@ -32,7 +32,7 @@ import { getStoredTheme, getPreferredTheme, setTheme } from "./utils";
 
 // Main App Component
 const AppContent = () => {
-  const theme = useSelector(selectMode);
+  // const theme = useSelector(selectMode);
   const dispatch = useDispatch();
   const { ui } = useConfig();
   const { isLoading, isSuccess, isError, error } = useGetUsersQuery();
