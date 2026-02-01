@@ -1,4 +1,5 @@
 import React from "react";
+import { track } from "@vercel/analytics";
 // Styles
 import { ThemeProvider } from "styled-components";
 // State
@@ -72,6 +73,18 @@ const AppContent = () => {
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [setThemes]);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("from") !== "redirect") return;
+
+    track("Redirect Landing", { source: "redirect" });
+    params.delete("from");
+    const queryString = params.toString();
+    const nextUrl = `${window.location.pathname}${queryString ? `?${queryString}` : ""}${window.location.hash}`;
+    window.history.replaceState(null, "", nextUrl);
+  }, []);
+
 
   // Render content based on loading state
   if (isLoading) {
