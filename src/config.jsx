@@ -57,7 +57,7 @@ export const externalResourcesConfig = [
   {
     id: "research-resource", 
     name: "Research",
-    url: "/research",
+    url: "/research.pdf",
     icon: "fa6-solid:microscope",
     description: "View my research work",
     type: "page",
