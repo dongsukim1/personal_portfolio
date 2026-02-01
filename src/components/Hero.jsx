@@ -1,12 +1,12 @@
 import React from "react";
 // Styles
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 // State
 import PropTypes from "prop-types";
 // Icons
 import { Icon } from "@iconify/react";
 // Images
-import Logo from "../images/logo.svg";
+import Logo from "../images/Vite.js.svg";
 import { Light, Dark } from "../config";
 // Components
 import { useErrorBoundary } from "react-error-boundary";
@@ -19,15 +19,6 @@ import { useConfig } from "../contexts/ConfigContext";
 import { isValidString } from "../utils";
 
 // #region styled-components
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
 const StyledHero = styled.header`
   position: relative;
   display: grid;
@@ -67,12 +58,6 @@ const StyledHero = styled.header`
 
   .down-container {
     height: 10rem;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .hero-img {
-      animation: ${spin} infinite 20s linear;
-    }
   }
 
   @media screen and (min-width: 1180px) {
@@ -123,7 +108,7 @@ const Hero = ({ name }) => {
           <Col className="d-none d-md-block">
             <img
               src={Logo}
-              alt="React Logo"
+              alt="Vite Logo"
               className="w-75 mx-auto hero-img"
             />
           </Col>
