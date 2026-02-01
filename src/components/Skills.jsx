@@ -1,4 +1,5 @@
 import React from "react";
+import { track } from "@vercel/analytics";
 // State
 import { useSelector } from "react-redux";
 import { selectMode } from "../app/appSlice";
@@ -32,7 +33,10 @@ const Skills = () => {
             ))}
           </Row>
           {content.resume && (
-            <a href={content.resume}>
+            <a
+              href={content.resume}
+              onClick={() => track("Resume Clicked", { location: "Skills" })}
+            >
               <Button
                 size="lg"
                 variant={theme === "light" ? "outline-dark" : "outline-light"}

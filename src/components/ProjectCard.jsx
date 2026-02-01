@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { track } from "@vercel/analytics";
 // Styles
 import styled from "styled-components";
 // State
@@ -86,6 +87,8 @@ const propTypes = {
 
 const ProjectCard = ({ demo, description, image, name, url, hasOnnxDemo = false }) => {
   const [showDemo, setShowDemo] = useState(false);
+  const handleGithubClick = () =>
+    track("GitHub Repo Clicked", { project: name, url });
 
   return (
     <>
@@ -130,7 +133,7 @@ const ProjectCard = ({ demo, description, image, name, url, hasOnnxDemo = false 
             </div>
           </Card.Body>
           <Card.Footer className="text-center">
-            <Card.Link href={url}>
+            <Card.Link href={url} onClick={handleGithubClick}>
               {"View on GitHub "}
               <Icon icon="icomoon-free:github" />
             </Card.Link>

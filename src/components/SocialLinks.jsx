@@ -1,4 +1,5 @@
 import React from "react";
+import { track } from "@vercel/analytics";
 // Styles
 import styled from "styled-components";
 // State
@@ -77,6 +78,12 @@ const SocialLinks = () => {
           href={userData.blog}
           aria-label="Visit blog"
           className="link-icons"
+          onClick={() =>
+            track("GitHub Link Clicked", {
+              source: "SocialLinks",
+              url: userData.html_url,
+            })
+          }
         >
           {Blog || <Icon icon="ph:link-bold" />}
         </a>
