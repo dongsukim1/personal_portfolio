@@ -1,14 +1,14 @@
 // Skills icons - https://icon-sets.iconify.design/
 import { Icon } from "@iconify/react";
 
-// Navbar Logo image (add your image to the src/images directory and uncomment the line below to import your image)
+// Navbar Logo image 
 // import newLogo from "./images/yourFileName"
 
-// Hero Images (add your images to the /images directory with the same names)
+// Hero Images 
 import HeroLight from "./images/hero-light.jpg";
 import HeroDark from "./images/hero-dark.jpg";
 
-// Projects Images (add your images to the images directory and import below)
+// Projects Images 
 // Unused photos/projects commented out
 // import pp1 from "./images/project_photo1.jpg"
 // import pp3 from "./images/temp_project_image.jpg"
