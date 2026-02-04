@@ -22,7 +22,7 @@ const StyledAboutMe = styled.section`
 // #endregion
 
 // #region component
-const AboutMe = ({bio, moreInfo }) => {
+const AboutMe = () => {
   return (
     <Element name={"About"} id="about">
       <StyledAboutMe className="section">

@@ -28,7 +28,6 @@ const Home = () => {
         moreInfo={content.moreInfo}
       />
       <main>
-        <AboutMe/>
         <Skills />
         <Projects />
         {/* <Contact /> contacts removed */}

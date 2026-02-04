@@ -13,6 +13,7 @@ import { useErrorBoundary } from "react-error-boundary";
 import { Link } from "react-scroll";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import SocialLinks from "./SocialLinks";
+import Title from "./Title";
 // Contexts
 import { useConfig } from "../contexts/ConfigContext";
 // Utils
@@ -108,6 +109,9 @@ const Hero = ({ name, bio, moreInfo }) => {
             </div>
             {(hasBio || hasMoreInfo) && (
               <div className="mx-auto" style={{ maxWidth: "36rem" }}>
+                <div className="mb-2">
+                  <Title size={"h2"} text={"About Me"} />
+                </div>
                 {hasBio && <p className="mb-2">{bio}</p>}
                 {hasMoreInfo && <p className="mb-0">{moreInfo}</p>}
               </div>
