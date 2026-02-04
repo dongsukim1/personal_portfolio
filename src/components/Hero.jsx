@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 // Icons
 import { Icon } from "@iconify/react";
 // Images
-import Logo from "../images/Vite.js.svg";
+import profilePhoto from "../images/profile_photo.jpg";
 import { Light, Dark } from "../config";
 // Components
 import { useErrorBoundary } from "react-error-boundary";
@@ -85,31 +85,39 @@ const StyledHero = styled.header`
 // #region component
 const propTypes = {
   name: PropTypes.string,
+  bio: PropTypes.string,
+  moreInfo: PropTypes.string,
 };
 
-const Hero = ({ name }) => {
+const Hero = ({ name, bio, moreInfo }) => {
   const { showBoundary } = useErrorBoundary();
   const { site } = useConfig();
 
   const displayName = isValidString(name) ? name : site.displayName;
+  const hasBio = isValidString(bio);
+  const hasMoreInfo = isValidString(moreInfo);
 
   return (
     <StyledHero>
       <Container>
         <Row className="align-items-center text-center">
           <Col>
-            <h1 className="mb-3 display-3 title">
-              {displayName}
-            </h1>
-            <div className="d-flex align-items-center justify-content-center">
+            <h1 className="mb-3 display-3 title">{displayName}</h1>
+            <div className="d-flex align-items-center justify-content-center mb-3">
               <SocialLinks />
             </div>
+            {(hasBio || hasMoreInfo) && (
+              <div className="mx-auto" style={{ maxWidth: "36rem" }}>
+                {hasBio && <p className="mb-2">{bio}</p>}
+                {hasMoreInfo && <p className="mb-0">{moreInfo}</p>}
+              </div>
+            )}
           </Col>
           <Col className="d-none d-md-block">
             <img
-              src={Logo}
-              alt="Vite Logo"
-              className="w-75 mx-auto hero-img"
+            src={profilePhoto}
+              alt={`${displayName} profile`}
+              className="w-75 mx-auto hero-img rounded-circle border border-primary-subtle"
             />
           </Col>
         </Row>

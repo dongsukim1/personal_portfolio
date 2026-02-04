@@ -22,13 +22,13 @@ const Home = () => {
 
   return (
     <>
-      <Hero name={userData?.name} />
+      <Hero
+        name={userData?.name}
+        bio={userData?.bio}
+        moreInfo={content.moreInfo}
+      />
       <main>
-        <AboutMe
-          // avatar_url={userData?.avatar_url}
-          bio={userData?.bio}
-          moreInfo={content.moreInfo}
-        />
+        <AboutMe/>
         <Skills />
         <Projects />
         {/* <Contact /> contacts removed */}
