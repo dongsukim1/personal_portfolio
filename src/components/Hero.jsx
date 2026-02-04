@@ -108,7 +108,7 @@ const Hero = ({ name, bio, moreInfo }) => {
               <SocialLinks />
             </div>
             {(hasBio || hasMoreInfo) && (
-              <div className="mx-auto" style={{ maxWidth: "36rem" }}>
+              <div className="mx-auto about-text" style={{ maxWidth: "36rem" }}>
                 <div className="mb-2">
                   <Title size={"h2"} text={"About Me"} />
                 </div>

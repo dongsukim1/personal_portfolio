@@ -42,6 +42,13 @@ a:hover {
   font-family: "Permanent Marker";
 }
 
+.about-text {
+  font-family: ${({ theme }) =>
+    theme.name === "dark"
+      ? "\"IBM Plex Sans\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif"
+      : "inherit"};
+}
+
 .link-icons {
   line-height: 0;
   font-size: 2.25rem;
