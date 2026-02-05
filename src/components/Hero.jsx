@@ -61,6 +61,10 @@ const StyledHero = styled.header`
     height: 10rem;
   }
 
+  .hero-photo {
+    width: 50%;
+  }
+
   @media screen and (min-width: 1180px) {
     &::before {
       background: ${({ theme }) =>
@@ -121,7 +125,7 @@ const Hero = ({ name, bio, moreInfo }) => {
             <img
             src={profilePhoto}
               alt={`${displayName} profile`}
-              className="w-75 mx-auto hero-img rounded-circle border border-primary-subtle"
+              className="mx-auto hero-img hero-photo rounded-circle border border-primary-subtle"
             />
           </Col>
         </Row>
