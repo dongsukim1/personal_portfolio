@@ -8,6 +8,7 @@ import { useGetUsersQuery, useGetSocialsQuery } from "../app/apiSlice";
 import { Icon } from "@iconify/react";
 // Config
 import { Blog, linkedinUrl, emailAddress, resumeUrl } from "../config";
+import { generateResourceUrl } from "../utils/urlUtils";
 // Utils
 import { isValidString, isValidArray } from "../utils";
 
@@ -34,6 +35,8 @@ const getSocialIcon = (provider) => {
   return <Icon icon={iconMap[provider] || "ph:link-bold"} />;
 };
 
+const resolvedResumeUrl = generateResourceUrl(resumeUrl);
+
 const extraSocials = [
   {
     provider: "linkedin",
@@ -47,7 +50,7 @@ const extraSocials = [
   },
   {
     provider: "resume",
-    url: resumeUrl,
+    url: resolvedResumeUrl,
     ariaLabel: "Download resume",
   },
 ];
