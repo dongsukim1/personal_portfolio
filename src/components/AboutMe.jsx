@@ -10,6 +10,11 @@ import { sizes} from "../theme/tokens";
 
 // #region styled-components
 const StyledAboutMe = styled.section`
+  font-family: ${({ theme }) =>
+    theme.name === "dark"
+      ? "\"IBM Plex Sans\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif"
+      : "inherit"};
+
   p {
     font-size: 1.25rem;
   }
