@@ -7,7 +7,7 @@ import { useGetUsersQuery, useGetSocialsQuery } from "../app/apiSlice";
 // Icons
 import { Icon } from "@iconify/react";
 // Config
-import { Blog, linkedinUrl, emailAddress } from "../config";
+import { Blog, linkedinUrl, emailAddress, resumeUrl } from "../config";
 // Utils
 import { isValidString, isValidArray } from "../utils";
 
@@ -28,6 +28,7 @@ const getSocialIcon = (provider) => {
     instagram: "fa-brands:instagram-square",
     tiktok: "fa-brands:tiktok",
     email: "mdi:email",
+    resume: "fa6-solid:file-lines"
   };
   
   return <Icon icon={iconMap[provider] || "ph:link-bold"} />;
@@ -43,6 +44,11 @@ const extraSocials = [
     provider: "email",
     url: `mailto:${emailAddress}`,
     ariaLabel: `Send an email to ${emailAddress}`,
+  },
+  {
+    provider: "resume",
+    url: resumeUrl,
+    ariaLabel: "Download resume",
   },
 ];
 

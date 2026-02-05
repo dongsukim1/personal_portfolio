@@ -24,6 +24,7 @@ export const githubUsername = "dongsukim1";
 // Social links
 export const linkedinUrl = "https://www.linkedin.com/in/dongsukim1/";
 export const emailAddress = "dkim0168@gmail.com";
+export const resumeUrl = "/resume.pdf"
 
 // Site metadata - single source of truth
 export const siteConfig = {
@@ -41,7 +42,6 @@ export const navigationConfig = {
   ],
   sections: [
     { id: "home-section", name: "Home", to: "Home" },
-    { id: "about-section", name: "About Me", to: "About" },
     { id: "skills-section", name: "Skills", to: "Skills" },
     { id: "projects-section", name: "Projects", to: "Projects" },
   ],
@@ -49,15 +49,6 @@ export const navigationConfig = {
 
 // External resources configuration
 export const externalResourcesConfig = [
-  {
-    id: "resume-resource",
-    name: "Resume",
-    url: "/resume.pdf",
-    icon: "fa6-solid:file-pdf",
-    description: "Download my resume",
-    type: "download",
-    showOnMobile: true,
-  },
   {
     id: "research-resource", 
     name: "Research",
