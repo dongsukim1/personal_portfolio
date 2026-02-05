@@ -7,7 +7,7 @@ import { useGetUsersQuery, useGetSocialsQuery } from "../app/apiSlice";
 // Icons
 import { Icon } from "@iconify/react";
 // Config
-import { Blog } from "../config";
+import { Blog, linkedinUrl, emailAddress } from "../config";
 // Utils
 import { isValidString, isValidArray } from "../utils";
 
@@ -27,10 +27,24 @@ const getSocialIcon = (provider) => {
     facebook: "fa-brands:facebook-square",
     instagram: "fa-brands:instagram-square",
     tiktok: "fa-brands:tiktok",
+    email: "mdi:email",
   };
   
   return <Icon icon={iconMap[provider] || "ph:link-bold"} />;
 };
+
+const extraSocials = [
+  {
+    provider: "linkedin",
+    url: linkedinUrl,
+    ariaLabel: "Visit LinkedIn profile",
+  },
+  {
+    provider: "email",
+    url: `mailto:${emailAddress}`,
+    ariaLabel: `Send an email to ${emailAddress}`,
+  },
+];
 
 // #region component
 const SocialLinks = () => {
@@ -59,18 +73,25 @@ const SocialLinks = () => {
       )}
       
       {/* Social media links */}
-      {isSuccess && isValidArray(socialsData) && 
-        socialsData.map((social, index) => (
+      {isSuccess &&
+        [
+          ...(isValidArray(socialsData) ? socialsData : []),
+          ...extraSocials.filter(
+            (extra) =>
+              extra.url &&
+              !(isValidArray(socialsData) &&
+                socialsData.some((social) => social.provider === extra.provider))
+          ),
+        ].map((social, index) => (
           <a
             key={`${social.provider}-${index}`}
             href={social.url}
-            aria-label={`Visit ${social.provider} profile`}
+            aria-label={social.ariaLabel || `Visit ${social.provider} profile`}
             className="link-icons"
           >
             {getSocialIcon(social.provider)}
           </a>
-        ))
-      }
+        ))}
       
       {/* Blog link */}
       {isValidString(userData?.blog) && (

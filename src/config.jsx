@@ -21,6 +21,10 @@ import pp4 from  "./images/wildlife_classification.png"
 
 export const githubUsername = "dongsukim1";
 
+// Social links
+export const linkedinUrl = "https://www.linkedin.com/in/dongsukim1/";
+export const emailAddress = "dkim0168@gmail.com";
+
 // Site metadata - single source of truth
 export const siteConfig = {
   displayName: "Dong Su Kim",
