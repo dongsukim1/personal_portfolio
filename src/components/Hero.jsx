@@ -5,7 +5,6 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 // Images
 import profilePhoto from "../images/profile_photo.jpg";
-import { Light, Dark } from "../config";
 // Components
 import { useErrorBoundary } from "react-error-boundary";
 import { Button, Col, Container, Row } from "react-bootstrap";
@@ -25,57 +24,8 @@ const StyledHero = styled.header`
   margin: 0 auto;
   min-height: calc(92vh - var(--nav-height));
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: ${({ theme }) =>
-      theme.name === "light"
-        ? "linear-gradient(135deg, var(--bs-primary), var(--bs-light))"
-        : "linear-gradient(135deg, var(--bs-primary), var(--bs-dark))"};
-    z-index: -2;
-  }
-
-  /* Overlay for contrast */
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: ${({ theme }) =>
-      theme.name === "light"
-        ? "rgba(255, 255, 255, 0.2)"
-        : "rgba(0, 0, 0, 0.2)"};
-    z-index: -1;
-  }
-
   .hero-photo {
     width: 50%;
-  }
-
-  @media screen and (min-width: 1180px) {
-    &::before {
-      background: ${({ theme }) =>
-        theme.name === "light"
-          ? `url(${Light}) top center fixed no-repeat`
-          : `url(${Dark}) top center fixed no-repeat`};
-      background-size: 100vw auto;
-    }
-  }
-
-  @media screen and (min-width: 1367px) {
-    &::before {
-      background: ${({ theme }) =>
-        theme.name === "light"
-          ? `url(${Light}) center center fixed no-repeat`
-          : `url(${Dark}) center center fixed no-repeat`};
-      background-size: cover;
-    }
   }
 `;
 // #endregion
