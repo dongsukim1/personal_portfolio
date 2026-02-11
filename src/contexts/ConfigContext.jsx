@@ -9,7 +9,6 @@ import {
     footerTheme,
     navLogo,
     moreInfo,
-    resume,
     onnxDemoConfig
 } from '../config';
 import { processExternalResources } from '../utils/urlUtils';
@@ -28,17 +27,6 @@ const ConfigProvider = ({ children }) => {
     // Process and validate external resources
     const validatedExternalResources = processExternalResources(externalResourcesConfig);
 
-    // Derive legacy arrays from unified config for backward compatibility
-    const homepageProjects = projectsConfig.filter(p => p.showOnHomepage);
-    const filteredProjects = homepageProjects.map(p => p.repoName);
-    const projectCardImages = projectsConfig.map(p => ({ name: p.repoName, image: p.image }));
-    const projectDisplayNames = Object.fromEntries(
-        projectsConfig.map(p => [p.repoName, p.displayName])
-    );
-    const projectsWithOnnxDemo = projectsConfig
-        .filter(p => p.hasOnnxDemo)
-        .map(p => p.repoName);
-
     const config = {
         site: siteConfig,
         skills: skillData,
@@ -47,13 +35,7 @@ const ConfigProvider = ({ children }) => {
             externalResources: validatedExternalResources,
         },
         projects: {
-            // New unified config
             config: projectsConfig,
-            // Legacy derived arrays for backward compatibility
-            filtered: filteredProjects,
-            images: projectCardImages,
-            displayNames: projectDisplayNames,
-            withOnnxDemo: projectsWithOnnxDemo,
         },
         onnx: onnxDemoConfig,
         ui: {
@@ -62,7 +44,6 @@ const ConfigProvider = ({ children }) => {
         },
         content: {
             moreInfo,
-            resume,
         },
     };
 

@@ -152,7 +152,7 @@ export const projectsConfig = [
     repoName: "cat_classification", 
     displayName: "Wildcat Conservation Project",
     image: pp4,
-    description: "An automated camera trap classification platform built to aid bigcat conservation efforts in the United States. Relies on an ENB3 backbone to robustly classify GBs of camera trap images and identify bobcats with 90%+ accuracy. Trained on a 200+ GB dataset distilled into 6 geographically and conservationally relevant species. The model is quantized to be able to return inferences at lightning speed with minimal compute from within a browser via ONNX Runtime. It is currently being worked on to improve inference accuracy via quantization aware training and the addition of automated bounding boxes.",
+    description: "An automated camera trap classification platform built to aid bigcat conservation efforts in the United States. Currently relies on an ENB3 backbone to robustly classify GBs of camera trap images and identify bobcats with 90%+ accuracy. Trained on a 200+ GB dataset distilled into 6 geographically and conservationally relevant species. The model is quantized to be able to return inferences at lightning speed with minimal compute from within a browser via ONNX Runtime. It is currently being worked on to improve inference accuracy via quantization aware training and the addition of automated bounding boxes.",
     tags: ["PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker"],
     url: null,
     showOnHomepage: true,
