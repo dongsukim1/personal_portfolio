@@ -3,14 +3,11 @@ import React from "react";
 import styled from "styled-components";
 // State
 import PropTypes from "prop-types";
-// Icons
-import { Icon } from "@iconify/react";
 // Images
 import profilePhoto from "../images/profile_photo.jpg";
 import { Light, Dark } from "../config";
 // Components
 import { useErrorBoundary } from "react-error-boundary";
-import { Link } from "react-scroll";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import SocialLinks from "./SocialLinks";
 import Title from "./Title";
@@ -55,10 +52,6 @@ const StyledHero = styled.header`
         ? "rgba(255, 255, 255, 0.2)"
         : "rgba(0, 0, 0, 0.2)"};
     z-index: -1;
-  }
-
-  .down-container {
-    height: 10rem;
   }
 
   .hero-photo {
@@ -116,8 +109,8 @@ const Hero = ({ name, bio, moreInfo }) => {
                 <div className="mb-2">
                   <Title size={"h2"} text={"About Me"} />
                 </div>
-                {hasBio && <p className="mb-2">{bio}</p>}
-                {hasMoreInfo && <p className="mb-0">{moreInfo}</p>}
+                {hasBio && <p className="mb-2 about-description">{bio}</p>}
+                {hasMoreInfo && <p className="mb-0 about-description">{moreInfo}</p>}
               </div>
             )}
           </Col>
@@ -127,13 +120,6 @@ const Hero = ({ name, bio, moreInfo }) => {
               alt={`${displayName} profile`}
               className="mx-auto hero-img hero-photo rounded-circle border border-primary-subtle"
             />
-          </Col>
-        </Row>
-        <Row className="align-items-end down-container">
-          <Col className="m-4 text-center">
-            <Link to={"Skills"} className="link-icons">
-              <Icon icon="fa6-solid:circle-chevron-down" />
-            </Link>
           </Col>
         </Row>
         <Button

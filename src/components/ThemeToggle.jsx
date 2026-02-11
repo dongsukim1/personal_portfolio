@@ -46,7 +46,7 @@ const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 // #region component
 const propTypes = {
   closeDelay: PropTypes.number,
-  setExpanded: PropTypes.func.isRequired,
+  setExpanded: PropTypes.func,
   setTheme: PropTypes.func.isRequired,
 };
 
@@ -62,9 +62,11 @@ const ThemeToggle = ({ closeDelay = 250, setExpanded, setTheme }) => {
   return (
     <StyledSwitch
       onClick={() => {
-        setTimeout(() => {
-          setExpanded(false);
-        }, closeDelay);
+        if (setExpanded) {
+          setTimeout(() => {
+            setExpanded(false);
+          }, closeDelay);
+        }
       }}
     >
       <input

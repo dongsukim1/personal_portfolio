@@ -19,7 +19,7 @@ import {
 import Loading from "../components/Loading";
 import Title from "../components/Title";
 import ProjectCard from "../components/ProjectCard";
-import BackToTop from "../components/BackToTop";
+// import BackToTop from "../components/BackToTop";
 // Hooks
 import { useTitle, TITLES } from "../hooks/useTitle";
 // Components
@@ -128,7 +128,7 @@ const AllProjects = () => {
           </InputGroup>
           <Row xs={1} md={2} lg={3} className="g-4 justify-content-center row">
             {filteredResults.map((element) => (
-              <Col key={element.id}>
+              <Col key={element.id} className="d-flex">
                 <ProjectCard
                   image={element.image}
                   name={element.name}
@@ -136,6 +136,7 @@ const AllProjects = () => {
                   url={element.html_url}
                   demo={element.homepage}
                   hasOnnxDemo={element.hasOnnxDemo}
+                  tags={element.tags}
                 />
               </Col>
             ))}
@@ -181,7 +182,7 @@ const AllProjects = () => {
           {content}
         </StyledSection>
       </main>
-      <BackToTop home={"Home"} />
+      {/* <BackToTop home={"Home"} /> */}
     </>
   );
 };

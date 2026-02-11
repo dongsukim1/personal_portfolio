@@ -139,8 +139,11 @@ export const resume = null;
 export const projectsConfig = [
   {
     repoName: "Blood_Protein_Classification",
-    displayName: "Blood Protein Classification Project",
+    displayName: "Single Cell RNA-Sequencing Analysis Tool",
     image: pp2,
+    description: "A tool created to help analyze sc-RNA seq data consisting of 765 different genes from 700 cells using an autoencoder and a simple custom neural network. Focuses on being able to differentiate between different immune cell types such as T cells, B cells, monocytes, dendritic cells, and NK cells. Uses dimensionality reduction techniques for visualization of data, performs feature extraction for downstream analysis and biomarker discovery. Data is preprocessed via log transform + standardization. ",
+    tags: ["PyTorch", "Keras", "NumPy", "Pandas", "sklearn", "seaborn"],
+    url: null,
     showOnHomepage: true,
     hasOnnxDemo: false,
     demoUrl: null,
@@ -149,14 +152,20 @@ export const projectsConfig = [
     repoName: "cat_classification", 
     displayName: "Wildcat Conservation Project",
     image: pp4,
+    description: "An automated camera trap classification platform built to aid bigcat conservation efforts in the United States. Relies on an ENB3 backbone to robustly classify GBs of camera trap images and identify bobcats with 90%+ accuracy. Trained on a 200+ GB dataset distilled into 6 geographically and conservationally relevant species. The model is quantized to be able to return inferences at lightning speed with minimal compute from within a browser via ONNX Runtime. It is currently being worked on to improve inference accuracy via quantization aware training and the addition of automated bounding boxes.",
+    tags: ["PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker"],
+    url: null,
     showOnHomepage: true,
     hasOnnxDemo: true,
     demoUrl: null,
   },
   {
     repoName: "Hunger",
-    displayName: "Hunger - Beli Clone", 
+    displayName: "Hunger", 
     image: pp5,
+    description: "A recreation of 'Beli' designed around addressing the core usability flaw where locations gradually lose relevance as entries increase. Allows for the creation of custom groupings or contexts that solves this issue. Hunger also contains a basic machine learning based recommender that can recommend new locations through a questionnaire. Effectively narrows down 500+ choices to <3 using an XGBoost model trained on 10,000+ synthetic personas with 20+ features. Comes with a minimalistic frontend for integration testing that showcases robustness of backend API endpoints. Backend API endpoints implement real-time deletion and addition of locations and their ratings as well as a time based garbage collector/recovery for deleted lists",
+    tags: ["Python", "Javascript/CSS/html", "SQLite3", "FastAPI", "scikit-learn", "Google Places API"],
+    url: null,
     showOnHomepage: true,
     hasOnnxDemo: false,
     demoUrl: null,
@@ -166,6 +175,9 @@ export const projectsConfig = [
   //   repoName: "your-repo-name",
   //   displayName: "Your Project Display Name",
   //   image: yourImage,
+  //   description: null, // Custom description for card body
+  //   tags: null, // Example: ["Python", "React", "AWS"]
+  //   url: null, // Optional override for GitHub URL
   //   showOnHomepage: true,
   //   hasOnnxDemo: false,
   //   demoUrl: "https://your-demo-url.com", // Optional external demo

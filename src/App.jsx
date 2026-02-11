@@ -21,7 +21,7 @@ import Loading from "./components/Loading";
 import ErrorDisplay from "./components/ErrorDisplay";
 import { Element } from "react-scroll";
 import { Container } from "react-bootstrap";
-import NavBar from "./components/NavBar";
+import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
 // Contexts
 import ConfigProvider, { useConfig } from "./contexts/ConfigContext";
@@ -103,7 +103,17 @@ const AppContent = () => {
     return (
       <>
         <Element name={"Home"} id="home">
-          <NavBar Logo={ui.navLogo} callBack={setThemes} />
+          {/* <NavBar Logo={ui.navLogo} callBack={setThemes} /> */}
+          <div
+            style={{
+              position: "fixed",
+              top: "1rem",
+              right: "1rem",
+              zIndex: 1031,
+            }}
+          >
+            <ThemeToggle setTheme={setThemes} />
+          </div>
         </Element>
         <Routes>
           <Route exact path="/" element={<Home />} />
