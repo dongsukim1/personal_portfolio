@@ -3,6 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMainProjects, selectProjects } from '../app/projectsSlice';
 import { useConfig } from '../contexts/ConfigContext';
 
+const normalizeRepoKey = (value) =>
+  String(value ?? '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+
 export const useProjectFiltering = () => {
   const dispatch = useDispatch();
   const projects = useSelector(selectProjects);
@@ -11,22 +16,39 @@ export const useProjectFiltering = () => {
   useEffect(() => {
     if (!projects.length) return;
 
-    // Get projects marked for homepage display from unified config
+    // Get projects marked for homepage display in renderOrder (then config order)
+    const orderedHomepageConfig = [...projectConfig.config]
+      .filter(p => p.showOnHomepage)
+      .sort((a, b) => {
+        const orderA = Number(a.renderOrder);
+        const orderB = Number(b.renderOrder);
+        const hasOrderA = Number.isFinite(orderA);
+        const hasOrderB = Number.isFinite(orderB);
+
+        if (hasOrderA && hasOrderB) return orderA - orderB;
+        if (hasOrderA) return -1;
+        if (hasOrderB) return 1;
+        return 0;
+      });
+
     const homepageRepoNames = projectConfig.config
       .filter(p => p.showOnHomepage)
-      .map(p => p.repoName);
+      .map(p => normalizeRepoKey(p.repoName));
     
-    // Debug logging
-    console.log('All projects from GitHub:', projects.map(p => ({ name: p.name, originalName: p.originalName })));
-    console.log('Homepage projects config:', homepageRepoNames);
-    
+    const orderedHomepageRepoNames = orderedHomepageConfig
+      .map(p => normalizeRepoKey(p.repoName));
+
     if (homepageRepoNames.length > 0) {
-      const filteredData = projects.filter(project =>
-        homepageRepoNames.includes(project.originalName || project.name)
+      const projectsByRepo = new Map(
+        projects.map(project => [
+          normalizeRepoKey(project.originalName || project.name),
+          project,
+        ])
       );
-      
-      console.log('Matched homepage projects:', filteredData.map(p => ({ name: p.name, originalName: p.originalName })));
-      
+      const filteredData = orderedHomepageRepoNames
+        .map(repoName => projectsByRepo.get(repoName))
+        .filter(Boolean);
+
       const mainProjects = filteredData.length > 0 
         ? filteredData 
         : projects.slice(0, 3);

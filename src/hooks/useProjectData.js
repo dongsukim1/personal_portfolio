@@ -3,6 +3,11 @@ import { useDispatch } from 'react-redux';
 import { setProjects } from '../app/projectsSlice';
 import { useConfig } from '../contexts/ConfigContext';
 
+const normalizeRepoKey = (value) =>
+  String(value ?? '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
+
 // Create lookup maps from unified config for efficient matching
 const createProjectMaps = (projectsConfig) => {
   const imageMap = new Map();
@@ -12,16 +17,22 @@ const createProjectMaps = (projectsConfig) => {
   const tagsMap = new Map();
   const demoUrlMap = new Map();
   const urlMap = new Map();
+  const orderMap = new Map();
   
-  projectsConfig.forEach(project => {
-    const lowerName = project.repoName.toLowerCase();
-    imageMap.set(lowerName, project.image);
-    displayNameMap.set(lowerName, project.displayName);
-    onnxDemoMap.set(lowerName, project.hasOnnxDemo);
-    descriptionMap.set(lowerName, project.description);
-    tagsMap.set(lowerName, project.tags);
-    demoUrlMap.set(lowerName, project.demoUrl);
-    urlMap.set(lowerName, project.url);
+  projectsConfig.forEach((project, index) => {
+    const repoKey = normalizeRepoKey(project.repoName);
+    imageMap.set(repoKey, project.image);
+    displayNameMap.set(repoKey, project.displayName);
+    onnxDemoMap.set(repoKey, project.hasOnnxDemo);
+    descriptionMap.set(repoKey, project.description);
+    tagsMap.set(repoKey, project.tags);
+    demoUrlMap.set(repoKey, project.demoUrl);
+    urlMap.set(repoKey, project.url);
+    const explicitOrder = Number(project.renderOrder);
+    orderMap.set(
+      repoKey,
+      Number.isFinite(explicitOrder) ? explicitOrder : index
+    );
   });
   
   return {
@@ -32,6 +43,7 @@ const createProjectMaps = (projectsConfig) => {
     tagsMap,
     demoUrlMap,
     urlMap,
+    orderMap,
   };
 };
 
@@ -45,10 +57,12 @@ const transformProjectData = (projectsData, projectMaps) => {
     tagsMap,
     demoUrlMap,
     urlMap,
+    orderMap,
   } = projectMaps;
   
-  return projectsData.map(element => {
-    const repoKey = element.name.toLowerCase();
+  return projectsData
+    .map((element, index) => {
+    const repoKey = normalizeRepoKey(element.name);
     const configuredTags = tagsMap.get(repoKey);
 
     return {
@@ -61,8 +75,15 @@ const transformProjectData = (projectsData, projectMaps) => {
       image: imageMap.get(repoKey) || null,
       hasOnnxDemo: onnxDemoMap.get(repoKey) ?? false,
       tags: Array.isArray(configuredTags) ? configuredTags : null,
+      _sortOrder: orderMap.has(repoKey) ? orderMap.get(repoKey) : Number.MAX_SAFE_INTEGER,
+      _originalIndex: index,
     };
-  });
+    })
+    .sort((a, b) => {
+      if (a._sortOrder !== b._sortOrder) return a._sortOrder - b._sortOrder;
+      return a._originalIndex - b._originalIndex;
+    })
+    .map(({ _sortOrder, _originalIndex, ...project }) => project);
 };
 
 export const useProjectData = (projectsData) => {

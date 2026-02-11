@@ -80,6 +80,17 @@ const StyledCard = styled.div`
       padding: 0.15rem 0.65rem;
       font-size: 0.8rem;
       line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .tag-icon {
+      font-size: 0.95rem;
+      width: 0.95rem;
+      height: 0.95rem;
+      line-height: 1;
+      object-fit: contain;
     }
 
     .card-link {
@@ -118,16 +129,71 @@ const StyledCard = styled.div`
 // #region component
 const propTypes = {
   demo: PropTypes.string,
-  description: PropTypes.string,
+  description: PropTypes.node,
   image: PropTypes.node,
   name: PropTypes.string.isRequired,
   url: PropTypes.string.isRequired,
   hasOnnxDemo: PropTypes.bool, // New prop for ONNX demo
-  tags: PropTypes.arrayOf(PropTypes.string),
+  tags: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        icon: PropTypes.string,
+      }),
+    ])
+  ),
 };
 
 const fillerDescription =
   "This is placeholder project description text. You can replace it with a custom summary.";
+
+const TAG_ICON_MAP = {
+  pytorch: "simple-icons:pytorch",
+  keras: "simple-icons:keras",
+  numpy: "simple-icons:numpy",
+  pandas: "simple-icons:pandas",
+  sklearn: "simple-icons:scikitlearn",
+  "scikit-learn": "simple-icons:scikitlearn",
+  seaborn: "mdi:chart-bell-curve-cumulative",
+  opencv: "simple-icons:opencv",
+  docker: "simple-icons:docker",
+  "aws - s3, ec2, sagemaker": "simple-icons:amazonaws",
+  python: "simple-icons:python",
+  "javascript/css/html": "simple-icons:javascript",
+  sqlite3: "simple-icons:sqlite",
+  fastapi: "simple-icons:fastapi",
+  "google places api": "simple-icons:googlemaps",
+  onnx: "simple-icons:onnx",
+};
+
+const normalizeTag = (tag) => {
+  const isSvgPath = (value) =>
+    typeof value === "string" &&
+    (value.trim().toLowerCase().endsWith(".svg") || value.trim().startsWith("/"));
+
+  if (typeof tag === "string") {
+    const key = tag.trim().toLowerCase();
+    return {
+      label: tag,
+      icon: TAG_ICON_MAP[key] || "mdi:tag-outline",
+      isSvgPath: false,
+    };
+  }
+
+  if (tag && typeof tag === "object" && typeof tag.label === "string") {
+    const iconValue =
+      typeof tag.icon === "string" && tag.icon.trim() ? tag.icon.trim() : "mdi:tag-outline";
+
+    return {
+      label: tag.label,
+      icon: iconValue,
+      isSvgPath: isSvgPath(iconValue),
+    };
+  }
+
+  return { label: "Tech", icon: "mdi:tag-outline", isSvgPath: false };
+};
 
 const ProjectCard = ({
   demo,
@@ -141,11 +207,14 @@ const ProjectCard = ({
   const [showDemo, setShowDemo] = useState(false);
   const hasLiveDemo = isValidUrl(demo);
   const hasDemoActions = hasOnnxDemo || hasLiveDemo;
+  const hasDescription =
+    typeof description === "string"
+      ? description.trim().length > 0
+      : description !== null && description !== undefined;
   const cardDescription =
-    typeof description === "string" && description.trim().length > 0
-      ? description
-      : fillerDescription;
+    hasDescription ? description : fillerDescription;
   const cardTags = Array.isArray(tags) && tags.length > 0 ? tags : ["Python"];
+  const normalizedTags = cardTags.map(normalizeTag);
   const handleGithubClick = () =>
     track("GitHub Repo Clicked", { project: name, url });
 
@@ -166,9 +235,14 @@ const ProjectCard = ({
             </div>
             <Card.Text className="project-description">{cardDescription}</Card.Text>
             <div className="tag-list">
-              {cardTags.map((tag, index) => (
-                <span key={`${name}-${tag}-${index}`} className="project-tag">
-                  {tag}
+              {normalizedTags.map((tag, index) => (
+                <span key={`${name}-${tag.label}-${index}`} className="project-tag">
+                  {tag.isSvgPath ? (
+                    <img src={tag.icon} alt={`${tag.label} logo`} className="tag-icon" />
+                  ) : (
+                    <Icon icon={tag.icon} className="tag-icon" />
+                  )}
+                  {tag.label}
                 </span>
               ))}
             </div>

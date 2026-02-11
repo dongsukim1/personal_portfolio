@@ -13,6 +13,11 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat(apiSlice.middleware);
+    return getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ["projects/setProjects", "projects/setMainProjects"],
+        ignoredPaths: ["projects.projects", "projects.mainProjects"],
+      },
+    }).concat(apiSlice.middleware);
   },
 });

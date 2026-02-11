@@ -10,7 +10,7 @@ import HeroDark from "./images/hero-dark.jpg";
 
 // Projects Images 
 // Unused photos/projects commented out
-// import pp1 from "./images/project_photo1.jpg"
+import pp1 from "./images/project_photo1.jpg"
 // import pp3 from "./images/temp_project_image.jpg"
 import pp2 from "./images/project_photo2.jpg"
 import pp5 from "./images/Hunger_logo.png"
@@ -79,106 +79,124 @@ export { HeroDark as Dark };
 */
 export const moreInfo =
   "I am a recent Computer Science graduate from Berkeley seeking Software Engineering/Machine Learning opportunities. I have a strong foundation in programming languages such as Python, Java, and C, and I am passionate about leveraging AI and machine learning to solve real-world problems.";
-/* Skills
- ************************************************************** 
-  Add or remove skills in the SAME format below, choose icons here - https://icon-sets.iconify.design/
-*/
-export const skillData = [
-  {
-    id: 1,
-    skill: <Icon icon="skill-icons:python-dark" className="display-4" />,
-    name: "Python",
-  },
-  {
-    id: 2,
-    skill: <Icon icon="skill-icons:java-light" className="display-4" />,
-    name: "Java",
-  },
-  {
-    id: 3,
-    skill: <Icon icon="vscode-icons:file-type-c" className="display-4" />,
-    name: "C",
-  },
-  {
-    id: 4,
-    skill: <Icon icon="fa6-brands:js" className="display-4" />,
-    name: "JavaScript",
-  },
-  {
-    id: 5,
-    skill: <Icon icon="skill-icons:aws-dark" className="display-4" />,
-    name: "AWS",
-  },
-  {
-    id: 6,
-    skill: <Icon icon="mdi:react" className="display-4" />,
-    name: "React",
-  },
-  {
-    id: 7,
-    skill: <Icon icon="bi:git" className="display-4" />,
-    name: "Git",
-  },
-  {
-    id: 8,
-    skill: <Icon icon="fa6-brands:square-github" className="display-4" />,
-    name: "GitHub",
-  },
-];
-
-// Resume link (string - "https://YourResumeUrl") - I am using CloudFront to share my resume (https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
-export const resume = null;
 
 /* Projects Configuration
  ************************************************************** 
   Unified project configuration - single source of truth for all project metadata
+  // Optional: set renderOrder to control left-to-right render sequence.
+  // Smaller numbers render first. If omitted, array order is used.
+  // Add more projects here as needed
+  // {
+  //   repoName: "your-repo-name",
+  //   displayName: "Your Project Display Name",
+  //   renderOrder: 4, // Optional explicit ordering
+  //   image: yourImage,
+  //   description: null, // Custom description for card body
+  //   tags: null, // Example: ["Python", "React", "AWS"] or [{ label: "Python", icon: "simple-icons:python" }]
+  //   url: null, // Optional override for GitHub URL
+  //   showOnHomepage: true,
+  //   hasOnnxDemo: false,
+  //   demoUrl: "https://your-demo-url.com", // Optional external demo
+  // },
 */
 export const projectsConfig = [
   {
-    repoName: "Blood_Protein_Classification",
-    displayName: "Single Cell RNA-Sequencing Analysis Tool",
-    image: pp2,
-    description: "A tool created to help analyze sc-RNA seq data consisting of 765 different genes from 700 cells using an autoencoder and a simple custom neural network. Focuses on being able to differentiate between different immune cell types such as T cells, B cells, monocytes, dendritic cells, and NK cells. Uses dimensionality reduction techniques for visualization of data, performs feature extraction for downstream analysis and biomarker discovery. Data is preprocessed via log transform + standardization. ",
-    tags: ["PyTorch", "Keras", "NumPy", "Pandas", "sklearn", "seaborn"],
-    url: null,
-    showOnHomepage: true,
-    hasOnnxDemo: false,
-    demoUrl: null,
-  },
-  {
-    repoName: "cat_classification", 
-    displayName: "Wildcat Conservation Project",
-    image: pp4,
-    description: "An automated camera trap classification platform built to aid bigcat conservation efforts in the United States. Currently relies on an ENB3 backbone to robustly classify GBs of camera trap images and identify bobcats with 90%+ accuracy. Trained on a 200+ GB dataset distilled into 6 geographically and conservationally relevant species. The model is quantized to be able to return inferences at lightning speed with minimal compute from within a browser via ONNX Runtime. It is currently being worked on to improve inference accuracy via quantization aware training and the addition of automated bounding boxes.",
-    tags: ["PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker"],
-    url: null,
-    showOnHomepage: true,
-    hasOnnxDemo: true,
-    demoUrl: null,
-  },
-  {
     repoName: "Hunger",
-    displayName: "Hunger", 
+    displayName: "Hunger",
+    renderOrder: 1,
     image: pp5,
-    description: "A recreation of 'Beli' designed around addressing the core usability flaw where locations gradually lose relevance as entries increase. Allows for the creation of custom groupings or contexts that solves this issue. Hunger also contains a basic machine learning based recommender that can recommend new locations through a questionnaire. Effectively narrows down 500+ choices to <3 using an XGBoost model trained on 10,000+ synthetic personas with 20+ features. Comes with a minimalistic frontend for integration testing that showcases robustness of backend API endpoints. Backend API endpoints implement real-time deletion and addition of locations and their ratings as well as a time based garbage collector/recovery for deleted lists",
+    description: (
+      <>
+        A recreation of "Beli" designed around addressing the core usability flaw where locations
+        gradually lose relevance as entries increase. Allows for the creation of custom groupings
+        or contexts that solve this issue. Hunger also contains a basic machine-learning recommender that suggests locations through
+        a questionnaire, narrowing 500+ choices to fewer than 3 with an XGBoost model trained on
+        10,000+ synthetic personas and 20+ features. Includes a minimal frontend for integration testing and backend endpoints for real-time
+        add/delete operations, plus a time-based garbage collector and recovery flow for deleted lists.
+      </>
+    ),
     tags: ["Python", "Javascript/CSS/html", "SQLite3", "FastAPI", "scikit-learn", "Google Places API"],
     url: null,
     showOnHomepage: true,
     hasOnnxDemo: false,
     demoUrl: null,
   },
-  // Add more projects here as needed
-  // {
-  //   repoName: "your-repo-name",
-  //   displayName: "Your Project Display Name",
-  //   image: yourImage,
-  //   description: null, // Custom description for card body
-  //   tags: null, // Example: ["Python", "React", "AWS"]
-  //   url: null, // Optional override for GitHub URL
-  //   showOnHomepage: true,
-  //   hasOnnxDemo: false,
-  //   demoUrl: "https://your-demo-url.com", // Optional external demo
-  // },
+  {
+    repoName: "cat_classification",
+    displayName: "Wildcat Conservation Project",
+    renderOrder: 2,
+    image: pp4,
+    description: (
+      <>
+        An automated camera-trap classification platform built to aid big-cat conservation efforts
+        in the United States. Uses an ENB3 backbone to classify large camera-trap image sets and identify bobcats with
+        90%+ accuracy, trained on a 200+ GB dataset distilled into 6 geographically relevant species. 
+        Quantized for fast, low-compute browser inference with ONNX Runtime, with ongoing work on
+        quantization-aware training and automated bounding boxes to improve accuracy.
+      </>
+    ),
+    tags: ["PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker", "ONNX"],
+    url: null,
+    showOnHomepage: true,
+    hasOnnxDemo: true,
+    demoUrl: null,
+  },
+  {
+    repoName: "BloodCellClassification",
+    displayName: "White Blood Cell Analysis Tool",
+    renderOrder: 3,
+    image: pp1,
+    description: (
+      <>
+        A computer-vision project built to distinguish between three blood-cell types from
+        microscope images using a pretrained PyTorch model and transfer learning.
+        Implements a custom dataset pipeline with lazy loading and CPU-focused optimizations for
+        low-compute inference, plus evaluation outputs including prediction examples, accuracy
+        metrics, and a confusion matrix. Fine-tuned on public microscopy dataset of 6,100 images, with a 500-image sample set in the repository for sanity checks.
+        <br />
+        <strong><u>Reference</u></strong>
+        <br />
+        Acevedo, A., Merino, A., Alferez, S., Molina, A., Boldu, L., & Rodellar, J. (2020).
+        A dataset of microscopic peripheral blood cell images for development of automatic
+        recognition systems (Version 1) [Data set]. Mendeley Data.
+        <br />
+        <>
+        <a
+          href="https://doi.org/10.17632/snkd93bnjr.1"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://doi.org/10.17632/snkd93bnjr.1
+        </a>
+        .
+        </>
+      </>
+    ),
+    tags: [],
+    url: null,
+    showOnHomepage: true,
+    hasOnnxDemo: false,
+    demoUrl: null,
+  },
+  {
+    repoName: "Blood_Protein_Classification",
+    displayName: "Single Cell RNA-Sequencing Analysis Tool",
+    renderOrder: 4,
+    image: pp2,
+    description: (
+      <>
+        A tool for analyzing scRNA-seq data (765 genes across 700 cells) using an autoencoder and
+        a custom neural network. Focuses on distinguishing immune-cell types including T cells, B cells, monocytes,
+        dendritic cells, and NK cells. Uses dimensionality reduction for visualization and feature extraction for downstream
+        analysis and biomarker discovery, with preprocessing via log transform and standardization.
+      </>
+    ),
+    tags: ["PyTorch", "Keras", "NumPy", "Pandas", "sklearn", "seaborn"], // or [{ label: "PyTorch", icon: "simple-icons:pytorch" }]
+    url: null,
+    showOnHomepage: true,
+    hasOnnxDemo: false,
+    demoUrl: null,
+  },
 ];
 
 /* Contact Info
@@ -210,3 +228,4 @@ export const onnxDemoConfig = {
     // ... add all your classes
   ]
 };
+

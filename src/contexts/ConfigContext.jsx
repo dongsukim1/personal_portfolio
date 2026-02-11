@@ -2,7 +2,6 @@ import React, { createContext, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
     siteConfig,
-    skillData,
     projectsConfig,
     navigationConfig,
     externalResourcesConfig,
@@ -28,7 +27,6 @@ const ConfigProvider = ({ children }) => {
 
     const config = {
         site: siteConfig,
-        skills: skillData,
         navigation: {
             ...navigationConfig,
             externalResources: validatedExternalResources,
