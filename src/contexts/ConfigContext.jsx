@@ -7,7 +7,6 @@ import {
     navigationConfig,
     externalResourcesConfig,
     footerTheme,
-    navLogo,
     moreInfo,
     onnxDemoConfig
 } from '../config';
@@ -40,7 +39,6 @@ const ConfigProvider = ({ children }) => {
         onnx: onnxDemoConfig,
         ui: {
             footerTheme,
-            navLogo,
         },
         content: {
             moreInfo,

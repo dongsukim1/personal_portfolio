@@ -103,7 +103,6 @@ const AppContent = () => {
     return (
       <>
         <Element name={"Home"} id="home">
-          {/* <NavBar Logo={ui.navLogo} callBack={setThemes} /> */}
           <div
             style={{
               position: "fixed",

@@ -63,9 +63,6 @@ export const externalResourcesConfig = [
 // Legacy export for backward compatibility
 export const displayName = siteConfig.displayName;
 
-// Navbar Logo image
-export const navLogo = null;
-
 /* Main
  ************************************************************** 
   Add a custom blog icon or update the hero images for the Main section.

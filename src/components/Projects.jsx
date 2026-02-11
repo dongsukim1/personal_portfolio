@@ -10,6 +10,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import Loading from "./Loading";
 import ProjectCard from "./ProjectCard";
 import ErrorDisplay from "./ErrorDisplay";
+import BackToTop from "./BackToTop";
 // Constants
 import { ERROR_MESSAGES } from "../constants";
 // Utils
@@ -21,7 +22,7 @@ const StyledProjectsSection = styled.section`
   display: block;
   margin: 0;
   padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.35rem;
 `;
 // #endregion
 
@@ -65,6 +66,7 @@ const Projects = () => {
                 );
               })}
             </Row>
+            <BackToTop home="Home" floating={false} />
           </>
         )}
       </>

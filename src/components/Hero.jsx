@@ -23,7 +23,7 @@ const StyledHero = styled.header`
   place-items: center;
   max-width: 1920px;
   margin: 0 auto;
-  min-height: calc(100vh - var(--nav-height));
+  min-height: calc(92vh - var(--nav-height));
 
   &::before {
     content: "";
