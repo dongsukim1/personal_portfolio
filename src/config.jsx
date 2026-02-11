@@ -1,9 +1,3 @@
-// Skills icons - https://icon-sets.iconify.design/
-import { Icon } from "@iconify/react";
-
-// Navbar Logo image 
-// import newLogo from "./images/yourFileName"
-
 // Hero Images 
 import HeroLight from "./images/hero-light.jpg";
 import HeroDark from "./images/hero-dark.jpg";
@@ -135,7 +129,7 @@ export const projectsConfig = [
         quantization-aware training and automated bounding boxes to improve accuracy.
       </>
     ),
-    tags: ["PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker", "ONNX"],
+    tags: ["Python", "PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker", "ONNX"],
     url: null,
     showOnHomepage: true,
     hasOnnxDemo: true,
@@ -152,7 +146,7 @@ export const projectsConfig = [
         microscope images using a pretrained PyTorch model and transfer learning.
         Implements a custom dataset pipeline with lazy loading and CPU-focused optimizations for
         low-compute inference, plus evaluation outputs including prediction examples, accuracy
-        metrics, and a confusion matrix. Fine-tuned on public microscopy dataset of 6,100 images, with a 500-image sample set in the repository for sanity checks.
+        metrics, and a confusion matrix. Fine-tuned on a public microscopy dataset of 6,100 images, with a 500-image sample set in the repository for sanity checks.
         <br />
         <strong><u>Reference</u></strong>
         <br />
@@ -172,7 +166,7 @@ export const projectsConfig = [
         </>
       </>
     ),
-    tags: [],
+    tags: ["Python", "PyTorch", "NumPy", "sklearn"],
     url: null,
     showOnHomepage: true,
     hasOnnxDemo: false,
@@ -180,7 +174,7 @@ export const projectsConfig = [
   },
   {
     repoName: "Blood_Protein_Classification",
-    displayName: "Single Cell RNA-Sequencing Analysis Tool",
+    displayName: "Single Cell RNA-Seq Analysis Tool",
     renderOrder: 4,
     image: pp2,
     description: (
@@ -198,13 +192,6 @@ export const projectsConfig = [
     demoUrl: null,
   },
 ];
-
-/* Contact Info
- ************************************************************** 
-  Add your formspree endpoint below.
-  https://formspree.io/
-*/
-// export const formspreeUrl = "https://formspree.io/f/YourEndpoint";
 
 // Footer icons theme (light or dark)
 export const footerTheme = "dark";
