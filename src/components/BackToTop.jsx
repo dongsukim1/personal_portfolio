@@ -10,7 +10,7 @@ import { Link } from "react-scroll";
 
 // #region styled-components
 const StyledDiv = styled.div`
-  visibility: hidden;
+  visibility: ${({ $isVisible }) => ($isVisible ? "visible" : "hidden")};
   z-index: 2;
   margin-top: 1.25rem;
   text-align: center;
@@ -22,17 +22,15 @@ const StyledDiv = styled.div`
     line-height: 1;
   }
 
-  &.show-up {
-    visibility: visible;
-  }
-
-  &.floating {
+  ${({ $floating }) =>
+    $floating &&
+    `
     position: fixed;
     bottom: calc(var(--min-footer-height) + 1.5rem);
     right: 1.5rem;
     margin-top: 0;
     text-align: initial;
-  }
+  `}
 `;
 // #endregion
 
@@ -44,7 +42,6 @@ const propTypes = {
 
 const BackToTop = ({ home = "Home", floating = true }) => {
   const [isVisible, setIsVisible] = React.useState(!floating);
-  const up = React.useRef(null);
 
   React.useEffect(() => {
     if (!floating) {
@@ -62,14 +59,8 @@ const BackToTop = ({ home = "Home", floating = true }) => {
     return () => window.removeEventListener("scroll", updateScrollY);
   }, [floating]);
 
-  React.useEffect(() => {
-    if (!up.current) return;
-    if (isVisible) up.current.classList.add("show-up");
-    else up.current.classList.remove("show-up");
-  }, [isVisible]);
-
   return (
-    <StyledDiv ref={up} className={floating ? "floating" : ""}>
+    <StyledDiv $floating={floating} $isVisible={isVisible}>
       <Link to={home} className="link-icons">
         <Icon icon="fa6-solid:circle-chevron-up" />
       </Link>
