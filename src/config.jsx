@@ -127,6 +127,11 @@ export const projectsConfig = [
         90%+ accuracy, trained on a 200+ GB dataset distilled into 6 geographically relevant species. 
         Quantized for fast, low-compute browser inference with ONNX Runtime, with ongoing work on
         quantization-aware training and automated bounding boxes to improve accuracy.
+        <br />
+        <strong><u>Reference Data Set</u></strong>
+        <br />
+        Sara Beery, Grant Van Horn, Pietro Perona. Recognition in Terra Incognita. Proceedings of the 15th European Conference on Computer Vision (ECCV 2018).
+        <br />
       </>
     ),
     tags: ["Python", "PyTorch", "OpenCV", "Docker", "AWS - s3, EC2, SageMaker", "ONNX"],
