@@ -11,7 +11,6 @@ import pp5 from "./images/Hunger_logo.png"
 import pp4 from  "./images/wildlife_classification.png"
 import pp6 from "./images/ambra_demo.png"
 
-
 //Github Username
 
 export const githubUsername = "dongsukim1";
@@ -73,7 +72,7 @@ export { HeroDark as Dark };
   Add a second paragraph for the about me section.
 */
 export const moreInfo =
-  "I am a recent Computer Science graduate from Berkeley seeking Software Engineering/Machine Learning opportunities. I have a strong foundation in programming languages such as Python, Java, and C, and I am passionate about leveraging AI and machine learning to solve real-world problems.";
+  "I'm a Computer Science + Bioengineering graduate from Berkeley passionate about leveraging AI and machine learning to solve real-world problems. I have experience building end-to-end machine learning pipelines for analyzing large multi-modal datasets at scale. My current biggest interest is building intelligent Agentic AI orchestration systems.";
 
 /* Projects Configuration
  ************************************************************** 
