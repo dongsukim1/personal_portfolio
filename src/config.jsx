@@ -9,6 +9,7 @@ import pp1 from "./images/project_photo1.jpg"
 import pp2 from "./images/project_photo2.jpg"
 import pp5 from "./images/Hunger_logo.png"
 import pp4 from  "./images/wildlife_classification.png"
+import pp6 from "./images/ambra_demo.png"
 
 
 //Github Username
@@ -97,7 +98,7 @@ export const projectsConfig = [
   {
     repoName: "Hunger",
     displayName: "Hunger",
-    renderOrder: 1,
+    renderOrder: 2,
     image: pp5,
     description: (
       <>
@@ -118,7 +119,7 @@ export const projectsConfig = [
   {
     repoName: "cat_classification",
     displayName: "Wildcat Conservation Project",
-    renderOrder: 2,
+    renderOrder: 3,
     image: pp4,
     description: (
       <>
@@ -143,7 +144,7 @@ export const projectsConfig = [
   {
     repoName: "BloodCellClassification",
     displayName: "White Blood Cell Analysis Tool",
-    renderOrder: 3,
+    renderOrder: 4,
     image: pp1,
     description: (
       <>
@@ -180,7 +181,7 @@ export const projectsConfig = [
   {
     repoName: "Blood_Protein_Classification",
     displayName: "Single Cell RNA-Seq Analysis Tool",
-    renderOrder: 4,
+    renderOrder: 5,
     image: pp2,
     description: (
       <>
@@ -195,6 +196,50 @@ export const projectsConfig = [
     showOnHomepage: true,
     hasOnnxDemo: false,
     demoUrl: null,
+  },
+  {
+    repoName: "24project",
+    displayName: "EMS Ambient Pipeline",
+    renderOrder: 1, 
+    image: pp6,
+    description: (
+      <>
+        I applied for a Founding Engineer role at Ambra without any prior domain knowledge in EMS. 
+        To bridge that gap, I spent roughly 24 hours reverse engineering their product based entirely on what was publicly available at the time, including their LinkedIn page, website, and job listing.
+        The result is an MVP that is approximately 90% complete. 
+        To fully realize the vision, the next steps would include implementing an agentic voice interface, upgrading the extraction layer with a RAG-based approach, and incorporating suitable real-world testing material for validation.
+        I may continue developing the project further, at which point the demo button below will be fully functional.
+        <br />
+        <br />
+        <strong>Technical Implementation</strong>
+        <br />
+        1. Stage CLI pipeline: <code>transcribe -&gt; extract -&gt; build-claim</code>
+        <br />
+        2. Agent flow: <code>agent1</code>..<code>agent4</code> on a shared session context
+        <br />
+        3. Audio/NLP stack: Whisper/faster-whisper (+ optional pyannote diarization), GLiNER extraction, and
+        rule-based context handling
+        <br />
+        4. Outputs: canonical claim JSON + provenance, with export targets for NEMSIS v3.5, X12 837P structured
+        representation, and FHIR R4 bundles
+        <br />
+        <br />
+        Check them out on{" "}
+        <a href="https://www.linkedin.com/company/ambra911/" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>{" "}
+        /{" "}
+        <a href="https://www.ambra911.com/" target="_blank" rel="noopener noreferrer">
+          Website
+        </a>
+        .
+      </>
+    ),
+    tags: ["Python", "TypeScript", "MCP", "NLP", "Whisper", "OpenAI"], 
+    url: null, // Optional override for GitHub URL
+    showOnHomepage: true,
+    hasOnnxDemo: false,
+    demoUrl: "https://your-demo-url.com", // Optional external demo
   },
 ];
 
@@ -220,4 +265,3 @@ export const onnxDemoConfig = {
     // ... add all your classes
   ]
 };
-
