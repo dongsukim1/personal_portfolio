@@ -72,7 +72,7 @@ export { HeroDark as Dark };
   Add a second paragraph for the about me section.
 */
 export const moreInfo =
-  "I'm a Computer Science + Bioengineering graduate from Berkeley passionate about leveraging AI and machine learning to solve real-world problems. I have experience building end-to-end machine learning pipelines for analyzing large multi-modal datasets at scale. My current biggest interest is building intelligent Agentic AI orchestration systems.";
+  "I'm a Computer Science + Bioengineering graduate from Berkeley passionate about leveraging AI and machine learning to solve real-world problems. I have experience building end-to-end machine learning pipelines for analyzing large multi-modal datasets at scale. My current biggest interest is building intelligent Agentic AI systems.";
 
 /* Projects Configuration
  ************************************************************** 
