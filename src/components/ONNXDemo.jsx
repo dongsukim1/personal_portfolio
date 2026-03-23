@@ -4,39 +4,44 @@ import { Modal, Button, Container, Row, Col, Alert, Spinner } from 'react-bootst
 import { Icon } from '@iconify/react';
 import { spacing, animations } from '../theme/tokens';
 
+// ImageNet normalization constants
+const IMAGENET_MEAN = [0.485, 0.456, 0.406];
+const IMAGENET_STD = [0.229, 0.224, 0.225];
+const RESIZE_SHORT_SIDE = 256;
+
 // Styled components
 const StyledDemo = styled.div`
   .drop-zone {
-    border: 2px dashed ${({ theme }) => 
+    border: 2px dashed ${({ theme }) =>
       theme.name === 'light' ? 'var(--bs-gray-400)' : 'var(--bs-gray-600)'};
     border-radius: ${spacing.md};
     padding: ${spacing.xxl};
     text-align: center;
     transition: ${animations.transition};
     cursor: pointer;
-    
+
     &:hover, &.drag-over {
       border-color: var(--bs-primary);
-      background-color: ${({ theme }) => 
+      background-color: ${({ theme }) =>
         theme.name === 'light' ? 'var(--bs-light)' : 'var(--bs-dark)'};
     }
   }
-  
+
   .preview-image {
     max-width: 100%;
     max-height: 300px;
     border-radius: ${spacing.sm};
     margin: ${spacing.lg} 0;
   }
-  
+
   .results-container {
-    background: ${({ theme }) => 
+    background: ${({ theme }) =>
       theme.name === 'light' ? 'var(--bs-gray-100)' : 'var(--bs-gray-800)'};
     border-radius: ${spacing.md};
     padding: ${spacing.lg};
     margin-top: ${spacing.lg};
   }
-  
+
   .confidence-bar {
     height: 20px;
     background: var(--bs-primary);
@@ -45,34 +50,43 @@ const StyledDemo = styled.div`
   }
 `;
 
+// Softmax: convert raw logits to probabilities
+const softmax = (logits) => {
+  const maxLogit = Math.max(...logits);
+  const exps = logits.map((l) => Math.exp(l - maxLogit));
+  const sumExps = exps.reduce((a, b) => a + b, 0);
+  return exps.map((e) => e / sumExps);
+};
+
 const ONNXDemo = ({ show, onHide, modelConfig }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
-  const [setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [predictions, setPredictions] = useState(null);
   const [error, setError] = useState(null);
   const [dragOver, setDragOver] = useState(false);
-  
+
   const fileInputRef = useRef(null);
   const sessionRef = useRef(null);
 
   // Load ONNX model
   const loadModel = useCallback(async () => {
     if (modelLoaded || !show) return;
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      // Dynamic import to avoid bundling issues
       const ort = await import('onnxruntime-web');
-      
-      // Configure ONNX Runtime
-      ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.16.3/dist/';
-      
-      // Load the model
-      const session = await ort.InferenceSession.create(modelConfig.modelUrl);
+
+      // Point WASM paths to the installed package version via CDN
+      ort.env.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.23.2/dist/';
+
+      const session = await ort.InferenceSession.create(
+        modelConfig.modelUrl,
+        { executionProviders: ['wasm'] }
+      );
       sessionRef.current = session;
       setModelLoaded(true);
     } catch (err) {
@@ -90,65 +104,86 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
     }
   }, [show, loadModel]);
 
-  // Preprocess image for model
-  const preprocessImage = async (imageElement) => {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    
-    // Resize to model input size
-    canvas.width = modelConfig.inputSize;
-    canvas.height = modelConfig.inputSize;
-    
-    // Draw and resize image
-    ctx.drawImage(imageElement, 0, 0, modelConfig.inputSize, modelConfig.inputSize);
-    
-    // Get image data
-    const imageData = ctx.getImageData(0, 0, modelConfig.inputSize, modelConfig.inputSize);
+  // Preprocess image to match training pipeline exactly:
+  // 1. Resize so shortest side = 256 (maintain aspect ratio)
+  // 2. Center crop to 224x224
+  // 3. Scale to [0,1], normalize with ImageNet mean/std
+  // 4. Convert to CHW tensor [1, 3, 224, 224]
+  const preprocessImage = (imageElement) => {
+    const { naturalWidth: w, naturalHeight: h } = imageElement;
+    const cropSize = modelConfig.inputSize; // 224
+
+    // Step 1: Resize so the shorter side is 256px
+    const scale = RESIZE_SHORT_SIDE / Math.min(w, h);
+    const resizedW = Math.round(w * scale);
+    const resizedH = Math.round(h * scale);
+
+    const resizeCanvas = document.createElement('canvas');
+    resizeCanvas.width = resizedW;
+    resizeCanvas.height = resizedH;
+    const resizeCtx = resizeCanvas.getContext('2d');
+    resizeCtx.drawImage(imageElement, 0, 0, resizedW, resizedH);
+
+    // Step 2: Center crop to 224x224
+    const offsetX = Math.floor((resizedW - cropSize) / 2);
+    const offsetY = Math.floor((resizedH - cropSize) / 2);
+    const cropCanvas = document.createElement('canvas');
+    cropCanvas.width = cropSize;
+    cropCanvas.height = cropSize;
+    const cropCtx = cropCanvas.getContext('2d');
+    cropCtx.drawImage(
+      resizeCanvas,
+      offsetX, offsetY, cropSize, cropSize,
+      0, 0, cropSize, cropSize
+    );
+
+    const imageData = cropCtx.getImageData(0, 0, cropSize, cropSize);
     const { data } = imageData;
-    
-    // Convert to tensor format (CHW)
-    const tensor = new Float32Array(3 * modelConfig.inputSize * modelConfig.inputSize);
-    
-    for (let i = 0; i < modelConfig.inputSize * modelConfig.inputSize; i++) {
-      tensor[i] = data[i * 4] / 255.0; // R
-      tensor[i + modelConfig.inputSize * modelConfig.inputSize] = data[i * 4 + 1] / 255.0; // G  
-      tensor[i + 2 * modelConfig.inputSize * modelConfig.inputSize] = data[i * 4 + 2] / 255.0; // B
+    const pixelCount = cropSize * cropSize;
+
+    // Steps 3-4: Scale to [0,1], ImageNet normalize, arrange as CHW
+    const tensor = new Float32Array(3 * pixelCount);
+    for (let i = 0; i < pixelCount; i++) {
+      const r = data[i * 4] / 255.0;
+      const g = data[i * 4 + 1] / 255.0;
+      const b = data[i * 4 + 2] / 255.0;
+
+      tensor[i]                    = (r - IMAGENET_MEAN[0]) / IMAGENET_STD[0]; // R channel
+      tensor[i + pixelCount]       = (g - IMAGENET_MEAN[1]) / IMAGENET_STD[1]; // G channel
+      tensor[i + 2 * pixelCount]   = (b - IMAGENET_MEAN[2]) / IMAGENET_STD[2]; // B channel
     }
-    
+
     return tensor;
   };
 
   // Run inference
   const runInference = async (imageElement) => {
     if (!sessionRef.current) return;
-    
+
     setIsLoading(true);
     setError(null);
-    
+
     try {
-      // Dynamic import
       const ort = await import('onnxruntime-web');
-      
-      // Preprocess image
-      const inputTensor = await preprocessImage(imageElement);
-      
-      // Create tensor
-      const tensor = new ort.Tensor('float32', inputTensor, [1, 3, modelConfig.inputSize, modelConfig.inputSize]);
-      
-      // Run inference
+
+      const inputTensor = preprocessImage(imageElement);
+      const size = modelConfig.inputSize;
+      const tensor = new ort.Tensor('float32', inputTensor, [1, 3, size, size]);
+
       const results = await sessionRef.current.run({ [modelConfig.inputName]: tensor });
       const output = results[modelConfig.outputName];
-      
-      // Process results
-      const predictions = Array.from(output.data)
-        .map((confidence, index) => ({
+
+      // Apply softmax to raw logits to get probabilities
+      const probabilities = softmax(Array.from(output.data));
+
+      const preds = probabilities
+        .map((prob, index) => ({
           class: modelConfig.classes[index],
-          confidence: confidence,
+          confidence: prob,
         }))
-        .sort((a, b) => b.confidence - a.confidence)
-        .slice(0, 5); // Top 5 predictions
-      
-      setPredictions(predictions);
+        .sort((a, b) => b.confidence - a.confidence);
+
+      setPredictions(preds);
     } catch (err) {
       console.error('Inference failed:', err);
       setError('Failed to process the image. Please try again.');
@@ -163,17 +198,15 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
       setError('Please select a valid image file.');
       return;
     }
-    
+
     setSelectedImage(file);
     setError(null);
     setPredictions(null);
-    
-    // Create preview
+
     const reader = new FileReader();
     reader.onload = (e) => {
       setImagePreview(e.target.result);
-      
-      // Create image element for inference
+
       const img = new Image();
       img.onload = () => runInference(img);
       img.src = e.target.result;
@@ -195,14 +228,13 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
   const handleDrop = (e) => {
     e.preventDefault();
     setDragOver(false);
-    
+
     const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
       handleFileSelect(files[0]);
     }
   };
 
-  // File input handler
   const handleFileInput = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -221,6 +253,9 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
     }
   };
 
+  // Suppress unused var warning — selectedImage is kept in state for future use
+  void selectedImage;
+
   return (
     <Modal show={show} onHide={onHide} size="lg" centered>
       <Modal.Header closeButton>
@@ -229,7 +264,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
           {modelConfig.title}
         </Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body>
         <StyledDemo>
           <Container>
@@ -240,7 +275,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                 Loading AI model... This may take a moment.
               </Alert>
             )}
-            
+
             {/* Error Display */}
             {error && (
               <Alert variant="danger">
@@ -248,10 +283,10 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                 {error}
               </Alert>
             )}
-            
+
             {/* Description */}
             <p className="text-center mb-4">{modelConfig.description}</p>
-            
+
             {/* File Drop Zone */}
             {modelLoaded && (
               <div
@@ -264,7 +299,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                 <Icon icon="mdi:cloud-upload" size="3rem" className="mb-3" />
                 <h5>Drop an image here or click to select</h5>
                 <p className="text-muted">Supports JPG, PNG, GIF formats</p>
-                
+
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -274,7 +309,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                 />
               </div>
             )}
-            
+
             {/* Image Preview */}
             {imagePreview && (
               <Row className="mt-4">
@@ -282,7 +317,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                   <h6>Selected Image:</h6>
                   <img src={imagePreview} alt="Selected" className="preview-image" />
                 </Col>
-                
+
                 {/* Results */}
                 <Col md={6}>
                   {isLoading && (
@@ -291,7 +326,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                       <p className="mt-2">Processing image...</p>
                     </div>
                   )}
-                  
+
                   {predictions && (
                     <div className="results-container">
                       <h6>Predictions:</h6>
@@ -302,7 +337,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
                             <span>{(pred.confidence * 100).toFixed(1)}%</span>
                           </div>
                           <div className="bg-light rounded">
-                            <div 
+                            <div
                               className="confidence-bar"
                               style={{ width: `${pred.confidence * 100}%` }}
                             />
@@ -317,7 +352,7 @@ const ONNXDemo = ({ show, onHide, modelConfig }) => {
           </Container>
         </StyledDemo>
       </Modal.Body>
-      
+
       <Modal.Footer>
         <Button variant="secondary" onClick={resetDemo}>
           <Icon icon="mdi:refresh" className="me-1" />

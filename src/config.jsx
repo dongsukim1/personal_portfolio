@@ -123,10 +123,11 @@ export const projectsConfig = [
     description: (
       <>
         An automated camera-trap classification platform built to aid big-cat conservation efforts
-        in the United States. Uses an ENB3 backbone to classify large camera-trap image sets and identify bobcats with
-        90%+ accuracy, trained on a 200+ GB dataset distilled into 6 geographically relevant species. 
-        Quantized for fast, low-compute browser inference with ONNX Runtime, with ongoing work on
-        quantization-aware training and automated bounding boxes to improve accuracy.
+        in the United States. Trained via bbox-conditioned feature distillation — a DINOv2-Large teacher saw
+        bounding-box-cropped animal regions while an EfficientNet-Lite0 student learned from full camera trap images,
+        teaching it to focus on the animal without needing bounding boxes at inference. Classifies 6 geographically
+        relevant species at 91.2% accuracy across a 200+ GB dataset, then quantized to INT8 via ONNX Runtime for
+        fast, low-compute browser inference.
         <br />
         <strong><u>Reference Data Set</u></strong>
         <br />
@@ -250,17 +251,18 @@ export const footerTheme = "dark";
   Configure your ONNX model demo here
 */
 export const onnxDemoConfig = {
-  title: "Image Classification Demo",
-  description: "Upload an image to see AI-powered classification in action. The model runs entirely in your browser!",
-  modelUrl: "/models/your-model.onnx", // Place your .onnx file in public/models/
-  inputName: "input", // Check your model's input name
-  outputName: "output", // Check your model's output name  
-  inputSize: 224, // Model input image size (e.g., 224x224)
+  title: "Wildlife Camera Trap Classifier",
+  description: "Upload a camera trap image to classify wildlife species. The model (EfficientNet-Lite0, INT8 quantized) runs entirely in your browser via ONNX Runtime.",
+  modelUrl: "/models/model_lite0_quant_v2.onnx",
+  inputName: "input",
+  outputName: "output",
+  inputSize: 224,
   classes: [
-    // Add your model's class labels here
-    "Class 1",
-    "Class 2", 
-    "Class 3",
-    // ... add all your classes
+    "bobcat",
+    "coyote",
+    "deer",
+    "empty",
+    "fox",
+    "mountain_lion",
   ]
 };
